@@ -1,25 +1,78 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import moment from 'moment';
-import React, { useState } from 'react';
-import { firestore } from '../firebase';
+import React, { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
+import { firestore, storage } from '../firebase';
+const {Camera} = Plugins;
 
 function NewEvent ({postHandler}) {
   
   const [ title, setTitle] = useState('');
   const [ date, setDate] = useState(moment(Date.now()).format('lll'));
   const [ venue, setVenue] = useState('');
+  const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png');
+  const fileInputRef = useRef();
+  const history = useHistory();
+
+  useEffect(() => () => {
+    if (pictureUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(pictureUrl);
+    }
+  }, [pictureUrl]);
+
+  async function savePicture(blobUrl) {
+    const pictureRef = storage.ref(
+      `/events/pictures/${(Math.trunc((Math.random*10000))).toString() + Date.now()}`);
+    const response = await fetch(blobUrl);
+    const blob = await response.blob();
+    const snapshot = await pictureRef.put(blob);
+    const url = await snapshot.ref.getDownloadURL();
+    console.log('saved picture:', url);
+    return url;
+  }
 
   async function submitHandler (e) {
     // e.preventDefault();
     try {
-      const entriesRef = firestore.collection('events')
+      const entriesRef = firestore.collection('events');
       const entryData = { date, title, venue }; 
+      if (!pictureUrl.startsWith('/assets')) {
+        entryData.pictureUrl = await savePicture(pictureUrl);
+      }
+      console.log(entryData.pictureUrl);
       const entryRef = await entriesRef.add(entryData);
       console.log('saved:', entryRef.id);
+      history.goBack();
     } catch (err) {
       console.log(err)
     }
   }
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      const file = event.target.files.item(0);
+      const pictureUrl = URL.createObjectURL(file);
+      setPictureUrl(pictureUrl);
+    }
+  };
+
+  const handlePictureClick = async () => {
+    if (isPlatform('capacitor')) {
+      try {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+          width: 600,
+        });
+        setPictureUrl(photo.webPath);
+      } catch (error) {
+        console.log('Camera error:', error);
+      }
+    } else {
+      fileInputRef.current.click();
+    }
+  };
 
   return (
     <IonPage>
@@ -53,11 +106,11 @@ function NewEvent ({postHandler}) {
           </IonItem>
           <IonItem>
             <IonLabel position="stacked">Picture</IonLabel><br />
-            <input type="file" accept="image/*" hidden ref={null}
-              onChange={null}
+            <input type="file" accept="image/*" hidden ref={fileInputRef}
+              onChange={handleFileChange}
             />
-            <img src={null} alt="" style={{ cursor: 'pointer' }}
-              onClick={null}
+            <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
+              onClick={handlePictureClick}
             />
           </IonItem>
           
