@@ -1,0 +1,45 @@
+.header-card {
+  display:flex;
+  flex-direction: column;
+  margin: 10px auto;
+  width: 70vw;
+  min-width: 250px;
+  box-shadow: 0 0 10px 1px #3333;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  background-color: rgb(255, 115, 0);
+  color:white;
+  align-items: center;
+}
+
+.header-next-event {
+  position: absolute;
+  font-size: 1rem;
+  font-weight: bold;
+  top: 1rem;
+  left: 1rem;
+}
+
+.header-time-section {
+  margin-top: 40px;
+  font-weight:700;
+}
+
+.header-title {
+  /* background-color:blue; */
+  font-size: 2rem;
+  font-weight: 400;
+  margin:20px;
+}
+
+.header-time,
+.header-venue
+{
+  color:white;
+  font-size: 1rem;
+  
+}
+.header-venue {
+  margin-bottom: 20px;
+}
