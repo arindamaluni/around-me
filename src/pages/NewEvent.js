@@ -1,9 +1,9 @@
 import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { firestore } from '../../firebase';
+import { firestore } from '../firebase';
 
-function Form ({postHandler}) {
+function NewEvent ({postHandler}) {
   
   const [ title, setTitle] = useState('');
   const [ date, setDate] = useState(moment(Date.now()).format('lll'));
@@ -26,9 +26,9 @@ function Form ({postHandler}) {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton />
+            <IonBackButton defaultHref="/page/events"/>
           </IonButtons>
-          <IonTitle>Add New Event</IonTitle>
+          <IonTitle>New Event</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
@@ -67,4 +67,4 @@ function Form ({postHandler}) {
     </IonPage>
   );
 }
-export default Form ;
+export default NewEvent ;

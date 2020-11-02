@@ -29,7 +29,7 @@ const Events: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>Current Events</IonTitle>
         </IonToolbar>
       </IonHeader>
 
