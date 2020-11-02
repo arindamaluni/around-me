@@ -1,3 +1,9 @@
-interface Event {id:string; title:string; date:string; venue:string};
+export class EventItem {
+  
+  id:string; title:string; date:Date; venue:string;
 
-export default Event;
+  static toEventItem (doc) {
+    return {id: doc.id, ...doc.data()}
+  }
+};
+

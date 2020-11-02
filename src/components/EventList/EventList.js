@@ -6,18 +6,14 @@ import list from './dummylist';
 import './EventList.css';
 
 function EventList({eventList}) {
-  eventList = eventList || list;
-  // const firstEvent = eventList[0];
-  // const otherEvents = eventList.slice(1);
-  return (
-    <> 
-    {/* {console.log(eventList.length, firstEvent)} */}
+  
+  eventList = eventList.length || list;
 
-    {/* <EventItemHeader  event={firstEvent} /> */}
+  return (
     <IonItemSliding>
       {eventList.map(event => {
         // return <EventItem key={event._id} event={event}/>
-        return (<IonItem href="#">
+        return (<IonItem href="#" key={event.id}>
         <IonLabel>
           <h2>{event.title}</h2>
           <p>{moment.utc(event.date).format('LLLL')}</p>
@@ -40,7 +36,6 @@ function EventList({eventList}) {
 
       })}
     </IonItemSliding>
-    </> 
     );
   }
 export default EventList;
