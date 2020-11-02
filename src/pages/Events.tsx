@@ -1,4 +1,5 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { add as addIcon } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import EventList from '../components/EventList/EventList';
@@ -32,17 +33,23 @@ const Events: React.FC = () => {
           <IonTitle>Current Events</IonTitle>
         </IonToolbar>
       </IonHeader>
-
+      <IonContent fullscreen>
       {events && 
-        <IonContent fullscreen>
+        <>
           <IonHeader collapse="condense">
             <IonToolbar>
               <IonTitle size="large">{name}</IonTitle>
             </IonToolbar>
           </IonHeader>
             <EventList eventList={events}/>   
-        </IonContent>  
+        </>
       }
+        <IonFab vertical="bottom" horizontal="end">
+          <IonFabButton routerLink="/page/newevent">
+            <IonIcon icon={addIcon} />
+          </IonFabButton>
+        </IonFab>
+      </IonContent>    
     </IonPage>
   );
 };

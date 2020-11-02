@@ -13,7 +13,7 @@ function EventList({eventList}) {
     <IonItemSliding>
       {eventList.map(event => {
         // return <EventItem key={event._id} event={event}/>
-        return (<IonItem href="#" key={event.id}>
+        return (<IonItem href={`/page/events/${event.id}`} key={event.id}>
         <IonLabel>
           <h2>{event.title}</h2>
           <p>{moment.utc(event.date).format('LLLL')}</p>

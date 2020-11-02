@@ -16,6 +16,7 @@ import '@ionic/react/css/typography.css';
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
+import EventDetails from './pages/EventDetails';
 import Events from './pages/Events';
 import NewEvent from './pages/NewEvent';
 /* Theme variables */
@@ -29,8 +30,10 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
+            <Route path="/page/events/:id" component={EventDetails} />
             <Route path="/page/events" component={Events} exact />
-            <Route path="/page/newevent" component={NewEvent} />
+            <Route path="/page/newevent" component={NewEvent} exact/>
+            
             <Redirect from="/" to="/page/events" exact />
           </IonRouterOutlet>
         </IonSplitPane>
