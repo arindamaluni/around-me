@@ -7,7 +7,7 @@ import './EventList.css';
 
 function EventList({eventList}) {
   
-  eventList = eventList.length || list;
+  eventList = eventList.length? eventList :list;
 
   return (
     <IonItemSliding>
