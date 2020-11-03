@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { firestore, storage } from '../firebase';
+import { ROUTE_EVENTS } from '../route-constants';
 const {Camera} = Plugins;
 
 function NewEvent ({postHandler}) {
@@ -79,7 +80,7 @@ function NewEvent ({postHandler}) {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/page/events"/>
+            <IonBackButton defaultHref={ROUTE_EVENTS}/>
           </IonButtons>
           <IonTitle>New Event</IonTitle>
         </IonToolbar>

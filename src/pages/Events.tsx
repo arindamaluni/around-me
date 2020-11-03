@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import EventList from '../components/EventList/EventList';
 import { firestore } from '../firebase';
+import { ROUTE_NEWEVENT } from '../route-constants';
 import { EventItem } from '../types';
 
 const Events: React.FC = () => {
@@ -44,7 +45,7 @@ const Events: React.FC = () => {
         </>
       }
         <IonFab vertical="bottom" horizontal="end">
-          <IonFabButton routerLink="/page/newevent">
+          <IonFabButton routerLink={ROUTE_NEWEVENT}>
             <IonIcon icon={addIcon} />
           </IonFabButton>
         </IonFab>

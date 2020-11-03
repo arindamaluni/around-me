@@ -2,8 +2,10 @@ import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLab
 import { archive, ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons';
 import moment from 'moment';
 import React from 'react';
+import { ROUTE_EVENT_PATH } from '../../route-constants';
 import list from './dummylist';
 import './EventList.css';
+
 
 function EventList({eventList}) {
   
@@ -13,7 +15,7 @@ function EventList({eventList}) {
     <IonItemSliding>
       {eventList.map(event => {
         // return <EventItem key={event._id} event={event}/>
-        return (<IonItem href={`/page/events/${event.id}`} key={event.id}>
+        return (<IonItem href={`${ROUTE_EVENT_PATH}${event.id}`} key={event.id}>
         <IonLabel>
           <h2>{event.title}</h2>
           <p>{moment.utc(event.date).format('LLLL')}</p>
