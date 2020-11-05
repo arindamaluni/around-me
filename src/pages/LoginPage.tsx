@@ -15,7 +15,7 @@ import {
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { auth } from '../firebase';
+import { auth, signInWithGoogle } from '../firebase';
 import { ROUTE_EVENTS, ROUTE_REGISTER } from '../route-constants';
 
 const LoginPage = (props) => {
@@ -70,6 +70,7 @@ const LoginPage = (props) => {
           <IonText color="danger">Invalid credentials</IonText>
         }
         <IonButton expand="block" onClick={handleLogin}>Login</IonButton>
+        <IonButton expand="block" color="primary" onClick={signInWithGoogle}>Login with Google</IonButton>
         <IonButton expand="block" fill="clear" routerLink={ROUTE_REGISTER}>
           Don't have an account?
         </IonButton>
