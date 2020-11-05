@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import authAction from './action-creators/auth-actions';
 import { auth as firebaseAuth } from './firebase';
 import store from './store';
+import authAction from './store/action-creators/auth-actions';
 
 interface Auth {
   loggedIn: boolean;
