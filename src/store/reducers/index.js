@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import authState from "./auth";
-import promotions from "./promotions";
+import events from "./events";
 
 export default combineReducers({
   authState,
-  promotions
+  events
 });

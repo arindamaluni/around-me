@@ -1,17 +1,14 @@
 import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { add as addIcon } from 'ionicons/icons';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import EventList from '../components/EventList/EventList';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
+import storeEvents from '../store/action-creators/event-actions';
 import { EventItem } from '../types';
 
-const Events: React.FC = () => {
-
-  const { name } = useParams<{ name: string; }>();
-  const [events, setEvents] = useState([]);
-  
+const Events = ({ authState, events, setEvents}) => {
 
   useEffect(() => {
     const entriesRef = firestore.collection('events');
@@ -21,7 +18,7 @@ const Events: React.FC = () => {
       .onSnapshot(({ docs }) => setEvents(docs.map(EventItem.toEventItem)),
                   (err)=> {console.log(err)})
     
-  }, []);
+  }, [setEvents]);
   
   return (
     <IonPage>
@@ -38,7 +35,7 @@ const Events: React.FC = () => {
         <>
           <IonHeader collapse="condense">
             <IonToolbar>
-              <IonTitle size="large">{name}</IonTitle>
+              <IonTitle size="large">Upcoming Events</IonTitle>
             </IonToolbar>
           </IonHeader>
             <EventList eventList={events}/>   
@@ -54,4 +51,15 @@ const Events: React.FC = () => {
   );
 };
 
-export default Events;
+const mapStateToProps = ({ authState, events }) => ({
+  authState, events
+});
+
+const mapDispatchToProps = dispatch => ({
+  setEvents (events) {
+    dispatch(storeEvents(events));
+  },
+
+});
+
+export default connect( mapStateToProps, mapDispatchToProps )(Events);
