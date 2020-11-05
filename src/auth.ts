@@ -1,5 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import authAction from './action-creators/auth-actions';
 import { auth as firebaseAuth } from './firebase';
+import store from './store';
 
 interface Auth {
   loggedIn: boolean;
@@ -8,28 +10,26 @@ interface Auth {
 
 interface AuthInit {
   loading: boolean;
-  auth?: Auth;
 }
 
-export const AuthContext = React.createContext<Auth>({ loggedIn: false });
-
-export function useAuth(): Auth {
-  return useContext(AuthContext);
-}
-
-export function useAuthInit(): AuthInit {
+export default function useAuthInit():AuthInit {
   const [authInit, setAuthInit] = useState<AuthInit>({ loading: true });
-  console.log("useAuthInit -> authInit", authInit.auth)
+  store.dispatch(authAction({ loggedIn: false, auth:null }))
+  console.log("useAuthInit -> authInit")
   useEffect(() => {
     return firebaseAuth.onAuthStateChanged((firebaseUser) => {
       const auth = firebaseUser ?
         { loggedIn: true, userId: firebaseUser.uid } :
         { loggedIn: false };
-      setAuthInit({ loading: false, auth });
-      console.log("useAuthInit -> stateChange ->User:", firebaseUser)
+      setAuthInit({ loading: false});
+      store.dispatch(authAction(auth))
+      console.log(firebaseUser)
+      console.log("useAuthInit -> stateChange ->User:", store.getState())
     });
     
   }, []);
   
   return authInit;
 }
+
+export const something = "";

@@ -13,13 +13,14 @@ import {
   IonToolbar
 } from '@ionic/react';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { useAuth } from '../auth';
 import { auth } from '../firebase';
 import { ROUTE_EVENTS, ROUTE_LOGIN } from '../route-constants';
 
-const RegisterPage: React.FC = () => {
-  const { loggedIn } = useAuth();
+const RegisterPage = ({authState}) => {
+
+  const {loggedIn} = authState;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState({ loading: false, error: false });
@@ -75,4 +76,9 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+
+const mapStateToProps = ({ authState }) => ({
+  authState
+});
+
+export default connect( mapStateToProps )(RegisterPage);

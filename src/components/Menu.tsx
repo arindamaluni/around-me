@@ -11,8 +11,8 @@ import {
 } from '@ionic/react';
 import { calendarClearOutline, calendarClearSharp, calendarOutline, calendarSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
 import React from 'react';
+import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '../auth';
 import { ROUTE_EVENTS, ROUTE_LOGIN, ROUTE_LOGOUT, ROUTE_NEWEVENT } from '../route-constants';
 import './Menu.css';
 
@@ -75,9 +75,10 @@ function getMenuItem (appPage, index, location, loggedIn) {
   );
 }
 
-const Menu: React.FC = () => {
+const Menu = (props) => {
   const location = useLocation();
-  const { loggedIn } = useAuth();
+  const { loggedIn } = props.authState;
+
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
@@ -104,4 +105,9 @@ const Menu: React.FC = () => {
   );
 };
 
-export default Menu;
+
+const mapStateToProps = ({ authState }) => ({
+  authState
+});
+
+export default connect( mapStateToProps )(Menu);

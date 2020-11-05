@@ -1,14 +1,16 @@
 import { IonContent, IonHeader, IonLoading, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { useAuth } from '../auth';
+// import { useAuth } from '../auth';
 import { auth } from '../firebase';
 import { ROUTE_LOGIN } from '../route-constants';
 
-const LogOutPage: React.FC = () => {
+const LogOutPage = ({ authState}) => {
   
   console.log('Logging Out')
-  const { loggedIn } = useAuth();
+  const { loggedIn } = authState;
+  // const loggedIn = false;
  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState({ loading: true, error: false });
@@ -37,4 +39,9 @@ const LogOutPage: React.FC = () => {
 
 };
 
-export default LogOutPage;
+
+const mapStateToProps = ({ authState }) => ({
+  authState
+});
+
+export default connect( mapStateToProps )(LogOutPage);
