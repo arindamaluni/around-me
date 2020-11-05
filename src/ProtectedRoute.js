@@ -1,19 +1,19 @@
-import { React } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import React from 'react';
+import { Redirect, Route } from 'react-router';
+import { useAuth } from './auth';
+import { ROUTE_LOGIN } from './route-constants';
 
-function ProtectedRoute ({ component: Component, authenticated, isPublic, ...rest }) {
-
-  if (isPublic || (authenticated === true)) return <Route {...rest} render={(props) => <Component {...props} />} />
-  return <Route {...rest} render={(props) => <Redirect to={{ pathname: '/login', state: { from: props.location } }} />} />
-
-  // return (
-  //   <Route
-  //     {...rest}
-  //     render={(props) => authenticated === true
-  //       ? <Component {...props} />
-  //       : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
-  //   />
-  // )
+function ProtectedRoute ({ component: Component, ...rest }) {
+  const { auth } =  useAuth();
+  const a = ( 
+    <Route
+      {...rest}
+      render={(props) => auth?.loggedIn? <Component {...props} />
+        : <Redirect to={{ pathname: `${ROUTE_LOGIN}`, state: { from: props.location } }} />}
+    />
+  )
+  console.log(a)
+  return a;
 }
 
 export default ProtectedRoute;

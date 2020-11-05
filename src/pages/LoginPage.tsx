@@ -39,6 +39,7 @@ const LoginPage: React.FC = () => {
   };
 
   if (loggedIn) {
+    console.log('Redirecting to Events')
     return <Redirect to={ROUTE_EVENTS} />;
   }
 

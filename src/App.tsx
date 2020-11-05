@@ -24,6 +24,7 @@ import LoginPage from './pages/LoginPage';
 import LogOutPage from './pages/LogOutPage';
 import NewEvent from './pages/NewEvent';
 import RegisterPage from './pages/RegisterPage';
+import ProtectedRoute from './ProtectedRoute';
 import * as constants from './route-constants';
 /* Theme variables */
 import './theme/variables.css';
@@ -44,7 +45,8 @@ const App: React.FC = () => {
               <Route path={constants.ROUTE_LOGOUT} component={LogOutPage} />
               <Route path={constants.ROUTE_REGISTER} component={RegisterPage} />
               <Route path={constants.ROUTE_EVENT_PARAM} component={EventDetails} />
-              <Route path={constants.ROUTE_EVENTS} component={Events} exact />
+              {/* <Route path={constants.ROUTE_EVENTS} component={Events} exact /> */}
+              <ProtectedRoute path={constants.ROUTE_EVENTS} component={Events} exact />
               <Route path={constants.ROUTE_NEWEVENT} component={NewEvent} exact/>             
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>

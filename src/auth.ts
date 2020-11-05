@@ -26,7 +26,7 @@ export function useAuthInit(): AuthInit {
         { loggedIn: true, userId: firebaseUser.uid } :
         { loggedIn: false };
       setAuthInit({ loading: false, auth });
-      console.log("useAuthInit -> authInit", firebaseUser)
+      console.log("useAuthInit -> stateChange ->User:", firebaseUser)
     });
     
   }, []);

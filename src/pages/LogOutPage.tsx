@@ -10,6 +10,7 @@ const LogOutPage: React.FC = () => {
   console.log('Logging Out')
   const { loggedIn } = useAuth();
  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [status, setStatus] = useState({ loading: true, error: false });
   if (!loggedIn) {
     return <Redirect to={ROUTE_LOGIN} />;
