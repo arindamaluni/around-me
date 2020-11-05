@@ -37,7 +37,8 @@ function NewEvent ({postHandler}) {
     // e.preventDefault();
     try {
       const entriesRef = firestore.collection('events');
-      const entryData = { date: new Date(date).getTime(), title, venue }; 
+      const entryData = { date: new Date(date).getTime(), title, 
+        venue, createdAt: new Date().getTime() }; 
       if (!pictureUrl.startsWith('/assets')) {
         entryData.pictureUrl = await savePicture(pictureUrl);
       }

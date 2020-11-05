@@ -5,20 +5,30 @@ import { connect } from 'react-redux';
 import EventList from '../components/EventList/EventList';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
-import storeEvents from '../store/action-creators/event-actions';
+import { addEvents, storeEvents } from '../store/action-creators/event-actions';
 import { EventItem } from '../types';
 
-const Events = ({ authState, events, setEvents}) => {
+const Events = ({ authState, events, setEvents, addNewEvents}) => {
 
   useEffect(() => {
-    const entriesRef = firestore.collection('events');
+
+    // Get snapshot of all future events
+    const entriesRef = firestore.collection('events')
+    entriesRef.where("date", ">", new Date().getTime()).get()
+    .then(({docs}) => {
+      const events = docs.map(EventItem.toEventItem);
+      setEvents(events);
+    });
+
+    //Subscribe to realtime update on new events
     //The return is to ensure unsubscribe is called on unmount
     console.log('Fetch Called');
-    return entriesRef.orderBy('date', 'desc').where("date", ">", new Date().getTime())
-      .onSnapshot(({ docs }) => setEvents(docs.map(EventItem.toEventItem)),
+    return entriesRef.orderBy('createdAt', 'desc').where("createdAt", ">", new Date().getTime())
+      .onSnapshot(({ docs }) => {
+        // console.log(currentTime, new Date().getTime(), docs.map(EventItem.toEventItem));
+        addNewEvents(docs.map(EventItem.toEventItem))},
                   (err)=> {console.log(err)})
-    
-  }, [setEvents]);
+  }, [setEvents, addNewEvents]);
   
   return (
     <IonPage>
@@ -56,10 +66,8 @@ const mapStateToProps = ({ authState, events }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setEvents (events) {
-    dispatch(storeEvents(events));
-  },
-
+  setEvents (events) { dispatch(storeEvents(events)) },
+  addNewEvents (events) { dispatch(addEvents(events)) }
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )(Events);
