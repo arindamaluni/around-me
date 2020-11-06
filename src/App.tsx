@@ -18,7 +18,10 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import useAuthInit from './auth';
+import EventListing from './components/EventListing/EventListing';
 import Menu from './components/Menu';
+/* Theme variables */
+import './global.scss';
 import EventDetails from './pages/EventDetails';
 import Events from './pages/Events';
 import LoginPage from './pages/LoginPage';
@@ -27,8 +30,6 @@ import NewEvent from './pages/NewEvent';
 import RegisterPage from './pages/RegisterPage';
 import * as constants from './route-constants';
 import store from './store';
-/* Theme variables */
-import './theme/variables.css';
 
 
 
@@ -53,6 +54,7 @@ const App: React.FC = () => {
               <Route path={constants.ROUTE_EVENTS} component={Events} exact />
               {/* <ProtectedRoute path={constants.ROUTE_EVENTS} component={Events} exact /> */}
               <Route path={constants.ROUTE_NEWEVENT} component={NewEvent} exact/>             
+              <Route path={constants.ROUTE_EVENT_TEMP} component={EventListing} exact/>             
 
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>
