@@ -13,7 +13,7 @@ import { calendarClearOutline, calendarClearSharp, calendarOutline, calendarShar
 import React from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { ROUTE_EVENTS, ROUTE_LOGIN, ROUTE_LOGOUT, ROUTE_NEWEVENT } from '../route-constants';
+import { ROUTE_EVENTS, ROUTE_EVENT_TEMP, ROUTE_LOGIN, ROUTE_LOGOUT, ROUTE_NEWEVENT } from '../route-constants';
 import './Menu.css';
 
 
@@ -36,6 +36,14 @@ const appPages: AppPage[] = [
   {
     title: 'Current Events',
     url: ROUTE_EVENTS,
+    iosIcon: calendarOutline,
+    mdIcon: calendarSharp,
+    displayWhileLoggedIn: true
+  },
+
+  {
+    title: 'Test Events',
+    url: ROUTE_EVENT_TEMP,
     iosIcon: calendarOutline,
     mdIcon: calendarSharp,
     displayWhileLoggedIn: true

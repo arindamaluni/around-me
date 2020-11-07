@@ -244,3 +244,11 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+
+// EXTRA GLOBAL STYLES
+// Add custom Ionic Colors
+@import "theme/custom-ion-colors.scss";
+// Add base app styles
+@import "theme/app-defaults.scss";
+// Add base shell styles
+@import "theme/shell-defaults.scss";
