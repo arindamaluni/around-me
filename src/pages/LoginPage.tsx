@@ -1,3 +1,5 @@
+import { Plugins } from '@capacitor/core';
+import "@codetrix-studio/capacitor-google-auth";
 import {
   IonButton,
   IonContent,
@@ -15,8 +17,9 @@ import {
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { auth, signInWithGoogle } from '../firebase';
+import { auth } from '../firebase';
 import { ROUTE_EVENTS, ROUTE_REGISTER } from '../route-constants';
+import setAuthAction from '../store/action-creators/auth-actions';
 
 const LoginPage = (props) => {
   console.log(props)
@@ -38,6 +41,18 @@ const LoginPage = (props) => {
       console.log('error:', error);
     }
   };
+
+  const loginGoogleNative = async () => {
+    const { setAuth } = props;
+    try {
+      const result = await Plugins.GoogleAuth.signIn();
+      console.log('Login Successful')
+      console.log(result);
+      const auth = { loggedIn: true, uid:result.id, email:result.email, displayName:result.name, photoURL:result.imageURL};
+      setAuth(auth);
+    } catch (err) { console.log(err); }
+    
+  }
 
   if (loggedIn) {
     console.log('Redirecting to Events')
@@ -70,7 +85,7 @@ const LoginPage = (props) => {
           <IonText color="danger">Invalid credentials</IonText>
         }
         <IonButton expand="block" onClick={handleLogin}>Login</IonButton>
-        <IonButton expand="block" color="primary" onClick={signInWithGoogle}>Login with Google</IonButton>
+        <IonButton expand="block" color="primary" onClick={loginGoogleNative}>Login with Google</IonButton>
         <IonButton expand="block" fill="clear" routerLink={ROUTE_REGISTER}>
           Don't have an account?
         </IonButton>
@@ -86,4 +101,8 @@ const mapStateToProps = ({ authState }) => ({
   authState
 });
 
-export default connect( mapStateToProps )(LoginPage);
+const mapDispatchToProps = dispatch => ({
+  setAuth (auth) { dispatch(setAuthAction(auth)) }
+});
+
+export default connect( mapStateToProps, mapDispatchToProps )(LoginPage);
