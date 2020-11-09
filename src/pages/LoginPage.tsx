@@ -48,7 +48,8 @@ const LoginPage = (props) => {
       const result = await Plugins.GoogleAuth.signIn();
       console.log('Login Successful')
       console.log(result);
-      const auth = { loggedIn: true, uid:result.id, email:result.email, displayName:result.name, photoURL:result.imageURL};
+      const auth = { loggedIn: true, loginMethod:'google', uid:result.id, 
+          email:result.email, displayName:result.name, photoURL:result.imageURL};
       setAuth(auth);
     } catch (err) { console.log(err); }
     

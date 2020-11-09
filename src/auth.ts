@@ -19,7 +19,7 @@ export default function useAuthInit():AuthInit {
     return firebaseAuth.onAuthStateChanged((firebaseUser) => {
       const { uid, email, displayName, photoURL} = firebaseUser || {};
       const auth = firebaseUser ?
-        { loggedIn: true, uid, email, displayName, photoURL} :
+        { loggedIn: true, loginMethod:'email', uid, email, displayName, photoURL} :
         { loggedIn: false };
       setAuthInit({ loading: false});
       store.dispatch(authAction(auth))
