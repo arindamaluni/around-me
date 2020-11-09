@@ -4,6 +4,7 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -20,6 +21,7 @@ import { Redirect } from 'react-router';
 import { auth } from '../firebase';
 import { ROUTE_EVENTS, ROUTE_REGISTER } from '../route-constants';
 import setAuthAction from '../store/action-creators/auth-actions';
+import google from '../theme/google.svg';
 
 const LoginPage = (props) => {
   console.log(props)
@@ -70,13 +72,13 @@ const LoginPage = (props) => {
       <IonContent className="ion-padding">
         <IonList>
           <IonItem>
-            <IonLabel position="stacked">Email</IonLabel>
+            <IonLabel position="floating">Email</IonLabel>
             <IonInput type="email" value={email}
               onIonChange={(event) => setEmail(event.detail.value)}
             />
           </IonItem>
           <IonItem>
-            <IonLabel position="stacked">Password</IonLabel>
+            <IonLabel position="floating">Password</IonLabel>
             <IonInput type="password" value={password}
               onIonChange={(event) => setPassword(event.detail.value)}
             />
@@ -86,7 +88,7 @@ const LoginPage = (props) => {
           <IonText color="danger">Invalid credentials</IonText>
         }
         <IonButton expand="block" onClick={handleLogin}>Login</IonButton>
-        <IonButton expand="block" color="primary" onClick={loginGoogleNative}>Login with Google</IonButton>
+        <IonButton expand="block" color="primary" onClick={loginGoogleNative}><IonIcon slot="start" icon={google} />Login with Google</IonButton>
         <IonButton expand="block" fill="clear" routerLink={ROUTE_REGISTER}>
           Don't have an account?
         </IonButton>
