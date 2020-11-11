@@ -1,6 +1,5 @@
 import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
-import { locationOutline, locationSharp } from 'ionicons/icons';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -116,11 +115,10 @@ const NewEvent =(props) => {
               onIonChange={(event) => setVenue(event.detail.value)}
             />
           </IonItem>
-          <IonItem onClick={()=>{console.log(locationPickOpen); setLocationPickOpen(true)}}>
+          <IonItem>
             <IonLabel position="stacked">Venue</IonLabel>
-            <IonIcon slot="end" md={locationSharp} ios={locationOutline}></IonIcon>
+            <IonIcon slot="end" name="location-md" onClick={setLocationPickOpen(true)}></IonIcon>
           </IonItem>
-          
           <IonItem>
             <IonLabel position="stacked">Picture</IonLabel><br />
             <input type="file" accept="image/*" hidden ref={fileInputRef}
