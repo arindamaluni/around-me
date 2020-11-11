@@ -105,28 +105,18 @@ const HomeContainer = (props) => {
     console.log(location);
     props.saveLocation(location);
     // clearWatch(state.watchId);
-
   }
 
-  function locationPickHandler (event:any) {
-    console.log(event.lat, event.lng);
-    setState(oldState=>{return {...oldState, latitude: event.lat, longitude: event.lng}});
-  }
-
-
-  const { center, loading, address, latitude, longitude } = state;
+  const { center, loading, address } = state;
     
     
   return (
     <IonModal isOpen={props.isOpen}>
       <HomeView
         center={center}
-        // latitude={center.lat}
-        // longitude={center.lng}
         getGeoLocation={getGeoLocation}
         loading={loading}
         address={address}
-        // locationPickHandler={locationPickHandler}
         onClose = {onClose}
       />
     </IonModal>
