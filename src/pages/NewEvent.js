@@ -105,14 +105,14 @@ const NewEvent =(props) => {
           />
         </IonItem>
         <IonItem>
-            <IonLabel position="stacked">Event Details</IonLabel>
+            <IonLabel position="floating">Event Details</IonLabel>
             <IonTextarea value={title}
               onIonChange={(event) => setTitle(event.detail.value)}
             />
         </IonItem>
         <IonList>
           <IonItem>
-            <IonLabel position="stacked">Venue</IonLabel>
+            <IonLabel position="floating">Venue</IonLabel>
             <IonInput value={venue}
               onIonChange={(event) => setVenue(event.detail.value)}
             />
@@ -120,11 +120,11 @@ const NewEvent =(props) => {
           <IonItem onClick={()=>{console.log(locationPickOpen); setLocationPickOpen(true)}}>
             <IonLabel position="stacked" value={location.address}>Venue</IonLabel>
             <IonText>{location.address}</IonText>
-            <IonIcon slot="end" md={locationSharp} ios={locationOutline}></IonIcon>
+            <IonIcon slot="end" md={locationSharp} ios={locationOutline} size="large" align="end"></IonIcon>
           </IonItem>
           
           <IonItem>
-            <IonLabel position="stacked">Picture</IonLabel><br />
+            <IonLabel position="floating">Picture</IonLabel><br />
             <input type="file" accept="image/*" hidden ref={fileInputRef}
               onChange={handleFileChange}
             />

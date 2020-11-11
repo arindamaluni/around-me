@@ -26,21 +26,22 @@
 
 .address {
   position: absolute;
-  top: 5px;
+  top: 3px;
   /* margin: auto; */
   left: 0;
   right: 0;
-  margin-left: 10px; 
-  width: 80%
+  margin-left: 3px; 
+  width: 85%
 }
 
 .geoAbs {
   position: absolute;
-  bottom: 40px;
+  bottom: 20px;
   /* margin: auto; */
-  left: 0;
-  right: 0;
-  margin: 16px;
+  left: 10px;
+  /* right: 0; */
+  width: 85%
+  /* margin: 16px; */
 }
 .pointer {
   border-top: 20px solid red;

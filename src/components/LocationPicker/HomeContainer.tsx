@@ -80,6 +80,7 @@ const HomeContainer = (props) => {
             loading: false,
           }
         );
+        console.log('Received current Location:', state.center)
         // clearWatch(watchId)
         // setState({...state, watchId})
         // Stop GPS after some interval
