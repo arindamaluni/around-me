@@ -1,5 +1,5 @@
 import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonText, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import { locationOutline, locationSharp } from 'ionicons/icons';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
@@ -14,7 +14,7 @@ const NewEvent =(props) => {
   const [ title, setTitle] = useState('');
   const [ date, setDate] = useState(moment(Date.now()).format('lll'));
   const [ venue, setVenue] = useState('');
-  const [ location, setLocation] = useState({latitude:0.0, longitude:0.0});
+  const [ location, setLocation] = useState({lat:0.0, lng:0.0, address:''});
   const [ locationPickOpen, setLocationPickOpen] = useState(false);
 
   const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png');
@@ -82,6 +82,7 @@ const NewEvent =(props) => {
   };
 
   const storeLocation = (location) => {
+    console.log("NewEvent:storeLocation -> location", location)
     setLocation(location);
     setLocationPickOpen(false);
   }
@@ -117,7 +118,8 @@ const NewEvent =(props) => {
             />
           </IonItem>
           <IonItem onClick={()=>{console.log(locationPickOpen); setLocationPickOpen(true)}}>
-            <IonLabel position="stacked">Venue</IonLabel>
+            <IonLabel position="stacked" value={location.address}>Venue</IonLabel>
+            <IonText>{location.address}</IonText>
             <IonIcon slot="end" md={locationSharp} ios={locationOutline}></IonIcon>
           </IonItem>
           

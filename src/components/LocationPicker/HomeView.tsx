@@ -18,6 +18,7 @@ const HomeView = (props: any) => {
   // const [state, setState] = useState({});
   const [address, setAddress] = useState('');
   const [currentPick, setCurrentPick] = useState({lat:center.lat, lng:center.lng, addresses:[], selectedAddress:''})
+  const [location, setLocation] = useState({lat:0, lng:0, address:''});
 
   useEffect(() =>{
     setCurrentPick({lat:center.lat, lng:center.lng, addresses:[], selectedAddress:''});
@@ -40,6 +41,10 @@ const HomeView = (props: any) => {
       setCurrentPick(oldState=>{return {...oldState, addresses:reply.results}});
     }
   }
+
+  const compareWith = (o1, o2) => {
+    return o1 && o2 ? o1.address === o2.address : o1 === o2;
+  };
 
   return (
     <>
@@ -93,13 +98,14 @@ const HomeView = (props: any) => {
           <IonItem className='geoAbs'>
             <IonLabel>Address</IonLabel>
             <IonSelect 
-              value="address" 
+              value={location} 
               interface="action-sheet" 
               placeholder='Select from List' 
-              onIonChange={e=> {console.log(e.detail.value);setCurrentPick({...currentPick, ...e.detail.value})}}>             
+              compareWith = {compareWith}
+              onIonChange={e => {console.log(e.detail.value);setLocation(e.detail.value)}}>             
               {currentPick.addresses.map((result,i) => 
                   <IonSelectOption key={i}
-                    value={{selectedAddress:result.formatted_address, 
+                    value={{address:result.formatted_address, 
                             lat:result.geometry.location.lat, 
                             lng:result.geometry.location.lng}} >
                     {result.formatted_address}
@@ -107,7 +113,7 @@ const HomeView = (props: any) => {
             </IonSelect>
           </IonItem>
           <IonButton onClick={getGeoLocation} className='geoFooter1'>Current Location</IonButton>
-          <IonButton onClick={()=>{console.log(currentPick)/* onClose(address) */}} className='geoFooter2'>Done</IonButton>
+          <IonButton onClick={()=>{console.log(location); onClose(location)}} className='geoFooter2'>Done</IonButton>
           
         </IonContent>
       </IonPage>

@@ -99,9 +99,10 @@ const HomeContainer = (props) => {
 
 
 
-  const onClose = (address) => {
-    console.log(address);
-    props.saveLocation(address);
+  const onClose = (location) => {
+    console.log("HomeContainer:onClose -> location", location)
+    console.log(location);
+    props.saveLocation(location);
     // clearWatch(state.watchId);
 
   }
