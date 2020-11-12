@@ -1,7 +1,7 @@
 import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonText, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonText, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import dayjs from 'dayjs';
 import { locationOutline, locationSharp } from 'ionicons/icons';
-import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import MapContainer from '../components/LocationPicker/MapContainer';
@@ -12,7 +12,11 @@ const {Camera} = Plugins;
 const NewEvent =(props) => {
   
   const [ title, setTitle] = useState('');
-  const [ date, setDate] = useState(moment(Date.now()).format('lll'));
+  const [ highlight, setHighlight] = useState('');
+  const [ overlay, setOverlay] = useState('');
+  const [ summary, setSummary] = useState('');
+  const [ perimeter, setPerimeter] = useState('');
+  const [ date, setDate] = useState(dayjs(Date.now()).format('D MMM YYYY H:mm'));
   const [ venue, setVenue] = useState('');
   const [ location, setLocation] = useState({lat:0.0, lng:0.0, address:''});
   const [ locationPickOpen, setLocationPickOpen] = useState(false);
@@ -99,41 +103,70 @@ const NewEvent =(props) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonItem>
-          <IonLabel position="stacked">Date</IonLabel>
-          <IonDatetime value={date}
+          <IonLabel position="stacked" >Date</IonLabel>
+          <IonDatetime value={date} color="primary" displayFormat="D MMM YYYY H:mm" 
+            min={dayjs().format('YYYY-MM-DDTHH:mm') } max="2500"  
             onIonChange={(event) => setDate(event.detail.value)}
           />
         </IonItem>
         <IonItem>
-            <IonLabel position="floating">Event Details</IonLabel>
-            <IonTextarea value={title}
-              onIonChange={(event) => setTitle(event.detail.value)}
+            <IonLabel position="floating">Title/Heading</IonLabel>
+            <IonInput value={title} type="text" placeholder="Headline of the Event"
+              color="primary" onIonChange={(event) => setTitle(event.detail.value)}
             />
         </IonItem>
-        <IonList>
+        <IonItem>
+            <IonLabel position="floating">Highlight/Caption</IonLabel>
+            <IonInput value={highlight} type="text" placeholder="Highlight your events here/ See preview"
+              color="primary" onIonChange={(event) => setHighlight(event.detail.value)}
+            />
+        </IonItem>
+        <IonItem>
+            <IonLabel position="floating">Event Summary</IonLabel>
+            <IonTextarea value={summary} type="text" placeholder="Event summary (500 letters)"
+              color="primary" onIonChange={(event) => setSummary(event.detail.value)}
+            />
+        </IonItem>
+        <IonItem>
+            <IonLabel position="floating">Image Overlay Text</IonLabel>
+            <IonInput value={overlay} type="text" placeholder="Your Overlay Text/Optional"
+              color="primary" onIonChange={(event) => setOverlay(event.detail.value)}
+            />
+        </IonItem>
+        {/* <IonList> */}
           <IonItem>
             <IonLabel position="floating">Venue</IonLabel>
-            <IonInput value={venue}
-              onIonChange={(event) => setVenue(event.detail.value)}
+            <IonInput value={venue} type="text" placeholder="Venue Details"
+              color="primary" onIonChange={(event) => setVenue(event.detail.value)}
             />
           </IonItem>
           <IonItem onClick={()=>{console.log(locationPickOpen); setLocationPickOpen(true)}}>
-            <IonLabel position="stacked" value={location.address}>Venue</IonLabel>
-            <IonText>{location.address}</IonText>
-            <IonIcon slot="end" md={locationSharp} ios={locationOutline} size="large" align="end"></IonIcon>
+            <IonLabel position="stacked" value={location.address}>Location</IonLabel>
+            <IonText type="text" placeholder="Your Overlay Text/Optional"
+              color="primary">{location.address}</IonText>
+            <IonIcon slot="end" md={locationSharp} ios={locationOutline} 
+              color="primary" size="large" align="end"
+            />
+          </IonItem>
+          <IonItem>
+            <IonLabel position="floating">Broadcast Perimeter</IonLabel>
+            <IonInput value={perimeter} type="number" placeholder="Your realtime notification perimeter"
+              color="primary" onIonChange={(event) => setPerimeter(event.detail.value)}
+            />
           </IonItem>
           
           <IonItem>
-            <IonLabel position="floating">Picture</IonLabel><br />
+            <IonLabel position="floating">Image</IonLabel><br />
             <input type="file" accept="image/*" hidden ref={fileInputRef}
-              onChange={handleFileChange}
+              placeholder="Select display image from Phone or take Photo"
+              color="primary" onChange={handleFileChange}
             />
             <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
               onClick={handlePictureClick}
             />
           </IonItem>
           
-        </IonList>
+        {/* </IonList> */}
         {locationPickOpen && <MapContainer isOpen={locationPickOpen} saveLocation={storeLocation}></MapContainer>}
         <IonButton expand="block" onClick={submitHandler}>Save</IonButton>
       </IonContent>
