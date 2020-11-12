@@ -1,6 +1,7 @@
 import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonText, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import dayjs from 'dayjs';
+import * as geofirex from 'geofirex';
 import { locationOutline, locationSharp } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -8,6 +9,7 @@ import MapContainer from '../components/LocationPicker/MapContainer';
 import { firestore, storage } from '../firebase';
 import { ROUTE_EVENTS } from '../route-constants';
 const {Camera} = Plugins;
+const geo = geofirex.init(firestore);
 
 const NewEvent =(props) => {
   
@@ -46,17 +48,29 @@ const NewEvent =(props) => {
     // e.preventDefault();
     try {
       const entriesRef = firestore.collection('events');
-      const entryData = { date: new Date(date).getTime(), title, 
-        venue, createdAt: new Date().getTime() }; 
-      if (!pictureUrl.startsWith('/assets')) {
-        entryData.pictureUrl = await savePicture(pictureUrl);
-      }
-      console.log(entryData.pictureUrl);
-      const entryRef = await entriesRef.add(entryData);
-      console.log('saved:', entryRef.id);
-      history.goBack();
+      const entryData = getEventEntry(); 
+      console.log(entryData);
+      // if (!pictureUrl.startsWith('/assets')) {
+      //   entryData.pictureUrl = await savePicture(pictureUrl);
+      // }
+      // console.log(entryData.pictureUrl);
+      // const entryRef = await entriesRef.add(entryData);
+      // console.log('saved:', entryRef.id);
+      // history.goBack();
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  function getEventEntry () {
+    console.log(date, typeof date)
+    console.log(geo.point(location.lat, location.lng))
+    return { 
+      date: new Date(date).getTime(), 
+      title, highlight, overlay, summary, 
+      venue, location:geo.point(location.lat, location.lng),
+      address:location.address,
+      createdAt: new Date().getTime()
     }
   }
 

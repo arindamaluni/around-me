@@ -1,0 +1,26 @@
+###app/strings.xml
+<string name="server_client_id">958820447540-iri1od74m2992rgrj18mhthai9khseje.apps.googleusercontent.com</string>
+### app MainActivity.java
+package com.around;
+
+import android.os.Bundle;
+
+import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.Plugin;
+import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
+
+import java.util.ArrayList;
+
+public class MainActivity extends BridgeActivity {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Initializes the Bridge
+    this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
+      // Additional plugins you've installed go here
+      // Ex: add(TotallyAwesomePlugin.class);
+      add(GoogleAuth.class);
+    }});
+  }
+}
