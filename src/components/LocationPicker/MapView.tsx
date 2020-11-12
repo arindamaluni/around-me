@@ -14,7 +14,7 @@ const Marker = (props:any) => (
       }} alt="Marker" />
   </>
 );
-const HomeView = (props: any) => {
+const MapView = (props: any) => {
   const { center, getGeoLocation, loading, onClose} = props
   // const [state, setState] = useState({});
   const [address, setAddress] = useState('');
@@ -137,4 +137,4 @@ const HomeView = (props: any) => {
     </>
   )
 }
-export default HomeView
+export default MapView

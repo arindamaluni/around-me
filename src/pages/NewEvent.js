@@ -4,7 +4,7 @@ import { locationOutline, locationSharp } from 'ionicons/icons';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-import HomeContainer from '../components/LocationPicker/HomeContainer';
+import MapContainer from '../components/LocationPicker/MapContainer';
 import { firestore, storage } from '../firebase';
 import { ROUTE_EVENTS } from '../route-constants';
 const {Camera} = Plugins;
@@ -134,7 +134,7 @@ const NewEvent =(props) => {
           </IonItem>
           
         </IonList>
-        {locationPickOpen && <HomeContainer isOpen={locationPickOpen} saveLocation={storeLocation}></HomeContainer>}
+        {locationPickOpen && <MapContainer isOpen={locationPickOpen} saveLocation={storeLocation}></MapContainer>}
         <IonButton expand="block" onClick={submitHandler}>Save</IonButton>
       </IonContent>
     </IonPage>

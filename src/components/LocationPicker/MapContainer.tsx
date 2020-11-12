@@ -1,12 +1,12 @@
 import { Capacitor, Plugins } from "@capacitor/core";
 import { IonModal } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import HomeView from "./HomeView";
 import LocationService from "./Location";
+import HomeView from "./MapView";
 
 const { Geolocation, Toast } = Plugins;
 
-const HomeContainer = (props) => {
+const MapContainer = (props) => {
   const [state, setState] = useState(
   {
     center: {
@@ -101,7 +101,7 @@ const HomeContainer = (props) => {
 
 
   const onClose = (location) => {
-    console.log("HomeContainer:onClose -> location", location)
+    console.log("MapContainer:onClose -> location", location)
     console.log(location);
     props.saveLocation(location);
     // clearWatch(state.watchId);
@@ -124,4 +124,4 @@ const HomeContainer = (props) => {
   
 }
 
-export default HomeContainer;
+export default MapContainer;
