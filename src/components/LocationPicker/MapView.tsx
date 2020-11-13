@@ -29,18 +29,18 @@ const MapView = (props: any) => {
   // const addressList = useRef<HTMLIonSelectElement>(null);
 
   async function getAddress (latitude: number, longitude:number, searchText:string) {
-    console.log(latitude, longitude, searchText)
+    // console.log(latitude, longitude, searchText)
     if (!searchText || searchText.trim() === '') {
       console.log("Reverse Geo")
       const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBsqyN1XfESBdJHJL58hJOLeDPCZH6Y9Hg`)
       const reply = await res.json();
-      console.log(reply);
+      // console.log(reply);
       setCurrentPick(oldState=>{return {...oldState, addresses:reply.results}});
     } else {
       console.log("Geo")
       const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(searchText)}&key=AIzaSyBsqyN1XfESBdJHJL58hJOLeDPCZH6Y9Hg`)
       const reply = await res.json();
-      console.log(reply);
+      // console.log(reply);
       setCurrentPick(oldState=>{return {...oldState, addresses:reply.results}});
     }
   }
@@ -111,7 +111,7 @@ const MapView = (props: any) => {
               interface="action-sheet" 
               placeholder='Select from List' 
               compareWith = {compareWith}
-              onIonChange={e => {console.log(e.detail.value);resetMarkerAndCenter(e.detail.value) }}>             
+              onIonChange={e => {/* console.log(e.detail.value) */;resetMarkerAndCenter(e.detail.value) }}>             
               {currentPick.addresses.map((result,i) => 
                   <IonSelectOption key={i}
                     value={{address:result.formatted_address, 
@@ -125,7 +125,7 @@ const MapView = (props: any) => {
           <IonFabButton size="small" onClick={getGeoLocation} >
             <IonIcon md={locateSharp} ios={locateOutline} />
           </IonFabButton>
-          <IonFabButton size="small" onClick={()=>{console.log(location); onClose(location)} }>
+          <IonFabButton size="small" onClick={()=>{/* console.log(location) */; onClose(location)} }>
             <IonIcon md={arrowBackSharp} ios={arrowBackOutline} defaultValue="Done"/>
           </IonFabButton>
         </IonFab>

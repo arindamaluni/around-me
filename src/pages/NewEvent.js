@@ -70,7 +70,7 @@ const NewEvent =(props) => {
       title, highlight, overlay, summary, venue, 
       //the field name must be "coordinates for geofirestore to calculate hashing"
       coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
-      address:location.address,
+      address:location.address, perimeter,
       createdAt: new Date().getTime()
     }
   }

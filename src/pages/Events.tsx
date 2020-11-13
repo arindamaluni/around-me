@@ -1,51 +1,61 @@
-// import { Capacitor, Geolocation, Toast } from '@capacitor/core';
-import { Toast } from '@capacitor/core';
 import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { getDistance } from 'geolib';
 import { add as addIcon } from 'ionicons/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import EventList from '../components/EventList/EventList';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
 import { EventItem } from '../types';
-// import LocationService from '../utils/Location';
-import { getGeoLocation } from '../utils/GetGeoLocation';
 
-const Events = ({ authState, events, setEvents, addNewEvents}) => {
-
-  const [state, setState] = useState({ 
-    center: {
-      lat: 0, //TODO: set the Home Location
-      lng: 0 
-    },
-    loading: false,
-  });
-
-  const toastHandler = async (message) => {
-    await Toast.show({text: message });
-  }
+const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
 
   useEffect(() => {
-    //Get current user location
-    getGeoLocation(setState, toastHandler);
+    // Get current user location
     // Get snapshot of all future events
     const entriesRef = firestore.collection('events')
     entriesRef.where("date", ">", new Date().getTime()).get()
     .then(({docs}) => {
-      const events = docs.map(EventItem.toEventItem);
+      const events = docs.map(EventItem.toEventItem)
+                          .filter(doc=>
+                            isWithinPerimeter(doc, location));
       setEvents(events);
     });
+    console.log('First fetch Called');
+ 
+  }, [setEvents]);
 
+  useEffect(()=> {
     //Subscribe to realtime update on new events
     //The return is to ensure unsubscribe is called on unmount
-    console.log('Fetch Called');
+    const entriesRef = firestore.collection('events')
     return entriesRef.orderBy('createdAt', 'desc').where("createdAt", ">", new Date().getTime())
       .onSnapshot(({ docs }) => {
         // console.log(currentTime, new Date().getTime(), docs.map(EventItem.toEventItem));
-        addNewEvents(docs.map(EventItem.toEventItem))},
-                  (err)=> {console.log(err)})
-  }, [setEvents, addNewEvents]);
+        console.log('New Event posted.....');
+        addNewEvents(
+          docs.map(EventItem.toEventItem)
+          .filter(doc=>isWithinPerimeter(doc, location))
+          )},
+          (err)=> {console.log(err)})
+  }, [addNewEvents, location])
+
+  const isWithinPerimeter = (eventItem, currentLoc) => {
+    // console.log(eventItem, currentLoc);
+    if (!eventItem || !eventItem.coordinates) return true;
+    const {latitude, longitude} = eventItem.coordinates;
+    
+    if (!(eventItem?.perimeter && latitude && longitude 
+        && currentLoc.latitude && currentLoc.longitude)) return true;
+    
+    const distance = getDistance({latitude, longitude}, 
+        {latitude:currentLoc.latitude, longitude:currentLoc.longitude})
+    console.log(distance)
+    if (distance <= eventItem?.perimeter) return true;
+    console.log('Outside Geo perimeter');
+    return false;
+  }
  
   return (
     <IonPage>
@@ -78,8 +88,8 @@ const Events = ({ authState, events, setEvents, addNewEvents}) => {
   );
 };
 
-const mapStateToProps = ({ authState, events }) => ({
-  authState, events
+const mapStateToProps = ({ authState, events, location }) => ({
+  authState, events, location
 });
 
 const mapDispatchToProps = dispatch => ({

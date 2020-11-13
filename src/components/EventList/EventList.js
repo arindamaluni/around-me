@@ -16,7 +16,7 @@ function EventList({eventList}) {
       {eventList.map(event => {
         // return <EventItem key={event._id} event={event}/>
         return ( 
-      <IonItemSliding>
+      <IonItemSliding key={event.id}>
         <IonItem href={`${ROUTE_EVENT_PATH}${event.id}`} key={event.id}>
           <IonLabel>
             <h2>{event.title}</h2>

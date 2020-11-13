@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { auth as firebaseAuth } from './firebase';
 import store from './store';
 import authAction from './store/action-creators/auth-actions';
+/* import setLocationAction from './store/action-creators/location-actions';
+import { getGeoLocation } from './utils/GetGeoLocation'; */
 
 interface Auth {
   loggedIn: boolean;
@@ -32,4 +34,14 @@ export default function useAuthInit():AuthInit {
   return authInit;
 }
 
-export const something = "";
+/* export const locationDispatcher = (payload)=> {
+  console.log(payload)
+  store.dispatch(setLocationAction(payload))
+}
+
+export const useLocationInit = () => {
+  useEffect(() => {
+    console.log('Getting Geolocation')
+    getGeoLocation(null, f=>f, locationDispatcher)
+  }, []);  
+} */
