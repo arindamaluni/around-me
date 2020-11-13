@@ -5,10 +5,11 @@
 
 // import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import {
-  IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid,
+  IonAvatar,
+  IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid,
   IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonText, IonTitle, IonToolbar
 } from "@ionic/react";
-import { pin, walk, warning, wifi, wine } from 'ionicons/icons';
+import { pin, text, thumbsUp, time, walk, warning, wifi, wine } from 'ionicons/icons';
 import React from "react";
 import { connect } from "react-redux";
 import './event-listing.scss';
@@ -85,6 +86,91 @@ function EventListing({events}) {
         </IonToolbar>
       </IonHeader>
       <IonContent ion-padding>
+        <IonCard color="light">
+          <IonItem class="ion-justify-content-between">
+            <IonAvatar slot="start">
+              <img src="../../assets/user.jpg" alt=""/>
+            </IonAvatar>         
+              {/* <IonItem > style={{display:"flex", justifyContent:"spaceBetween"}} style={{borderWidth:"thin", borderStyle:"solid", borderRadius:"2px", borderColor:"primary", padding:"5px"}} */}
+                {/* <IonRow class="ion-justify-content-between">
+                <IonCol size="6"> */}
+                <div className="ion-float-left" style={{fontWeight:"bold"}}>
+                  <h5>John Doe</h5>
+                  <p style={{fontSize:"10px", color:"#FF0077"}}> Dec 10, 2019</p>
+                </div>
+                {/* </IonCol > */}
+                {/* <IonButton fill="outline" slot="end">View</IonButton> */}
+                {/* <IonCol size="6" class="ion-float-right"> */}
+                <IonLabel slot="end" color="primary" class="ion-text-uppercase ion-text-end ion-padding " ><div style={{ display:"inline-block", borderWidth:"2px", borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} > Available</div></IonLabel>
+                {/* </IonCol>
+                </IonRow> */}
+              {/* </IonItem> */}
+
+          </IonItem>
+          <div style={{position:"relative"}}>      
+            <img src="./assets/deals/Deal-Details-showcase-2.jpg" style={{width: "100%"}} alt="ion" />
+            <div style={{position:"absolute", bottom:"2px", backgroundColor:"#FF0077", opacity:"0.65", color:"white", width: "100%", textAlign:"center", padding:"3px",  fontWeight:"bold"}}>Overlay Text</div>
+          </div>
+          <IonCardHeader>
+            <IonCardSubtitle>
+              <div style={{display: "flex", flexDirection:"row", justifyContent:"space-between", width: "100%"}}>
+                <span style={{fontSize:"14px", color:"#FF0077", display: "inline"}}>Exclusive Offer</span>
+                <span style={{fontSize:"14px", color:"#FF0077", display: "inline"}}>Valid Till: Dec 10, 2019</span>
+              </div>
+            </IonCardSubtitle>
+            <IonCardTitle ><div className = "ion-text-center" ><h2 style={{fontWeight: "bold"}}>30% off on Lindt on a purchase of 3</h2></div></IonCardTitle>
+            
+          </IonCardHeader>
+          <IonCardContent class="ion-text-center" style={{fontSize:"13px"}}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+          </IonCardContent>
+          <br></br>
+          <IonItem class="ion-text-center" style={{fontSize:"15px", color:"#FF0077", backgroundColor:"white",paddingBottom:"3px"}}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis mollis ligula sed ultrices.
+          </IonItem>
+
+          <IonFooter>
+            <div style={{display:"flex", justifyContent:"space-around"}}>
+              <button style={{backgroundColor:"transparent", outline:"none"}}>
+                <IonIcon style={{fontSize:"20px"}} color="primary" icon={thumbsUp}></IonIcon>
+                <div style={{fontSize:"10px"}}> 4</div>
+              </button>
+              <button>
+                <IonIcon icon={text}></IonIcon>
+                <div>4 Comments</div>
+              </button>
+              <button>
+                <IonIcon icon={time}></IonIcon>
+                <div>11h ago</div>
+              </button>
+            </div>
+           {/*  <IonRow>
+              <IonCol  text-center>
+                <button>
+                  <IonIcon icon={thumbsUp}></IonIcon>
+                  <div>1.5k Likes</div>
+                </button>
+              </IonCol>
+              <IonCol  text-center>
+                <button>
+                  <IonIcon icon={text}></IonIcon>
+                  <div>4 Comments</div>
+                </button>
+              </IonCol>
+              <IonCol  text-center>
+                <button>
+                  <IonIcon icon={time}></IonIcon>
+                  <div>11h ago</div>
+                </button>
+              </IonCol>
+            </IonRow> */}
+          </IonFooter>
+
+          </IonCard>
         <IonGrid>
           <IonCol size-md="6" offset-md="3" class="ion-text-center">
             <IonRow>
@@ -116,8 +202,8 @@ function EventListing({events}) {
 
                 <IonCardContent>
                   This is content, without any paragraph or header tags,
-                  within an ion-cardContent element.
-            </IonCardContent>
+                  within an IonCardContent element.
+                </IonCardContent>
               </IonCard>
 
               <IonCard>
@@ -143,7 +229,13 @@ function EventListing({events}) {
               </IonCard>
             </IonCol>
         </IonGrid>
+  
+        
+ 
       </IonContent>
+
+      
+
     </IonPage>
 
 
