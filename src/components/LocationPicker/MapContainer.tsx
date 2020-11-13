@@ -1,7 +1,7 @@
 import { Capacitor, Plugins } from "@capacitor/core";
 import { IonModal } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import LocationService from "./Location";
+import LocationService from "../../utils/Location";
 import HomeView from "./MapView";
 
 const { Geolocation, Toast } = Plugins;
