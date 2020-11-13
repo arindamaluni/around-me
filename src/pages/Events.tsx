@@ -1,17 +1,34 @@
+// import { Capacitor, Geolocation, Toast } from '@capacitor/core';
+import { Toast } from '@capacitor/core';
 import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { add as addIcon } from 'ionicons/icons';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import EventList from '../components/EventList/EventList';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
 import { EventItem } from '../types';
+// import LocationService from '../utils/Location';
+import { getGeoLocation } from '../utils/GetGeoLocation';
 
 const Events = ({ authState, events, setEvents, addNewEvents}) => {
 
-  useEffect(() => {
+  const [state, setState] = useState({ 
+    center: {
+      lat: 0, //TODO: set the Home Location
+      lng: 0 
+    },
+    loading: false,
+  });
 
+  const toastHandler = async (message) => {
+    await Toast.show({text: message });
+  }
+
+  useEffect(() => {
+    //Get current user location
+    getGeoLocation(setState, toastHandler);
     // Get snapshot of all future events
     const entriesRef = firestore.collection('events')
     entriesRef.where("date", ">", new Date().getTime()).get()
@@ -29,7 +46,7 @@ const Events = ({ authState, events, setEvents, addNewEvents}) => {
         addNewEvents(docs.map(EventItem.toEventItem))},
                   (err)=> {console.log(err)})
   }, [setEvents, addNewEvents]);
-  
+ 
   return (
     <IonPage>
       <IonHeader>
