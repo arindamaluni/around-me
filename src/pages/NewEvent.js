@@ -1,7 +1,8 @@
 import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonText, IonTextarea, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import dayjs from 'dayjs';
-import * as geofirex from 'geofirex';
+import firebase from 'firebase/app';
+import * as geofirestore from 'geofirestore';
 import { locationOutline, locationSharp } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -9,7 +10,7 @@ import MapContainer from '../components/LocationPicker/MapContainer';
 import { firestore, storage } from '../firebase';
 import { ROUTE_EVENTS } from '../route-constants';
 const {Camera} = Plugins;
-const geo = geofirex.init(firestore);
+const GeoFirestore = geofirestore.initializeApp(firestore);
 
 const NewEvent =(props) => {
   
@@ -45,30 +46,30 @@ const NewEvent =(props) => {
   }
 
   async function submitHandler (e) {
-    // e.preventDefault();
+    e.preventDefault();
     try {
-      const entriesRef = firestore.collection('events');
+      const entriesRef = GeoFirestore.collection('events');
       const entryData = getEventEntry(); 
       console.log(entryData);
-      // if (!pictureUrl.startsWith('/assets')) {
-      //   entryData.pictureUrl = await savePicture(pictureUrl);
-      // }
-      // console.log(entryData.pictureUrl);
-      // const entryRef = await entriesRef.add(entryData);
-      // console.log('saved:', entryRef.id);
-      // history.goBack();
+      if (!pictureUrl.startsWith('/assets')) {
+        entryData.pictureUrl = await savePicture(pictureUrl);
+      }
+      console.log(entryData.pictureUrl);
+      const entryRef = await entriesRef.add(entryData);
+      console.log('saved:', entryRef.id);
+      history.goBack();
     } catch (err) {
       console.log(err)
     }
   }
 
   function getEventEntry () {
-    console.log(date, typeof date)
-    console.log(geo.point(location.lat, location.lng))
+    console.log(+dayjs(date))
     return { 
-      date: new Date(date).getTime(), 
-      title, highlight, overlay, summary, 
-      venue, location:geo.point(location.lat, location.lng),
+      date: +dayjs(date), 
+      title, highlight, overlay, summary, venue, 
+      //the field name must be "coordinates for geofirestore to calculate hashing"
+      coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
       address:location.address,
       createdAt: new Date().getTime()
     }

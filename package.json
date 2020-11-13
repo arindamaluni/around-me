@@ -24,10 +24,11 @@
     "cordova-plugin-android-permissions": "^1.1.0",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
     "dayjs": "^1.9.6",
-    "firebase": "^8.0.0",
-    "geofirex": "^0.1.0",
+    "firebase": "^8.0.1",
+    "geofirestore": "^4.3.0",
     "google-map-react": "^2.1.9",
     "ionicons": "^5.0.0",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -36,7 +37,6 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
-    "rxjs": "^6.6.3",
     "typescript": "3.8.3"
   },
   "scripts": {
