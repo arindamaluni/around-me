@@ -122,13 +122,13 @@ const MapView = (props: any) => {
             </IonSelect>
           </IonItem>
           <IonFab vertical="center" horizontal="end">
-          <IonFabButton size="small" onClick={getGeoLocation} >
-            <IonIcon md={locateSharp} ios={locateOutline} />
-          </IonFabButton>
-          <IonFabButton size="small" onClick={()=>{/* console.log(location) */; onClose(location)} }>
-            <IonIcon md={arrowBackSharp} ios={arrowBackOutline} defaultValue="Done"/>
-          </IonFabButton>
-        </IonFab>
+            <IonFabButton size="small" onClick={getGeoLocation} >
+              <IonIcon md={locateSharp} ios={locateOutline} />
+            </IonFabButton>
+            <IonFabButton size="small" onClick={()=>{/* console.log(location) */; onClose(location)} }>
+              <IonIcon md={arrowBackSharp} ios={arrowBackOutline} defaultValue="Done"/>
+            </IonFabButton>
+          </IonFab>
           {/* <IonButton onClick={getGeoLocation} className='geoFooter1'>Current Location</IonButton> */}
           {/* <IonButton onClick={()=>{console.log(location); onClose(location)}} className='geoFooter2'>Done</IonButton> */}
           

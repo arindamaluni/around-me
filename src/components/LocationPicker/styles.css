@@ -3,12 +3,10 @@
   height: 100%;
 }
 
-.geoFooter1 {
+/* .geoFooter1 {
   position: absolute;
   bottom: 0;
-  /* margin: auto; */
   left: 0;
-  /* right: 0; */
   width: 40%;
   margin: 16px;
 }
@@ -16,18 +14,14 @@
 .geoFooter2 {
   position: absolute;
   bottom: 0;
-  /* margin: auto; */
-  /* left: 0; */
   right: 0;
   width: 40%;
   margin: 16px;
-
-}
+} */
 
 .address {
   position: absolute;
   top: 3px;
-  /* margin: auto; */
   left: 0;
   right: 0;
   margin-left: 3px; 
@@ -37,12 +31,10 @@
 .geoAbs {
   position: absolute;
   bottom: 20px;
-  /* margin: auto; */
   left: 10px;
-  /* right: 0; */
   width: 85%
-  /* margin: 16px; */
 }
+
 .pointer {
   border-top: 20px solid red;
   border-left: 4px solid transparent;

@@ -1,20 +1,22 @@
 import { Plugins } from "@capacitor/core";
 import { IonModal } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { connect } from 'react-redux';
 import { getGeoLocation } from '../../utils/GetGeoLocation';
 import MapView from "./MapView";
 
 const { Toast } = Plugins;
 
 const MapContainer = (props) => {
+  const {latitude, longitude} = props.location;
   const [state, setState] = useState(
   {
     center: {
-      lat: 12.934485599999999,
-      lng: 77.6192336,
+      lat: latitude,
+      lng: longitude,
     },
-    latitude: 12.934485599999999,
-    longitude: 77.6192336,
+    latitude: latitude,
+    longitude: longitude,
     loading: false,
     address: "",
   });
@@ -24,9 +26,9 @@ const MapContainer = (props) => {
     await Toast.show({text: message });
   }
 
-  useEffect (()=> {
-    getGeoLocation(setState, toastHandler);
-  }, [])
+  // useEffect (()=> {
+  //   getGeoLocation(setState, toastHandler);
+  // }, [])
 
   const onClose = (location) => {
     console.log("MapContainer:onClose -> location", location)
@@ -51,4 +53,8 @@ const MapContainer = (props) => {
   
 }
 
-export default MapContainer;
+const mapStateToProps = ({ authState, events, location }) => ({
+  authState, events, location
+});
+
+export default connect( mapStateToProps ) (MapContainer);
