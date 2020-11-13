@@ -19,7 +19,7 @@ const MapContainer = (props) => {
     address: "",
   });
 
-  useEffect (()=>{
+  useEffect (()=> {
     getGeoLocation();
   }, [])
 
@@ -27,21 +27,11 @@ const MapContainer = (props) => {
   const getGeoLocation = async () => {
     const hasPermission = await LocationService.checkGPSPermission();
     if (hasPermission) {
-      if (Capacitor.isNative) {
-        const canUseGPS = await LocationService.askToTurnOnGPS();
-        postGPSPermission(canUseGPS);
-      } else {
-        postGPSPermission(true);
-      }
+      turnGPSOn()
     } else {
       const permission = await LocationService.requestGPSPermission();
       if (permission === "CAN_REQUEST" || permission === "GOT_PERMISSION") {
-        if (Capacitor.isNative) {
-          const canUseGPS = await LocationService.askToTurnOnGPS();
-          postGPSPermission(canUseGPS);
-        } else {
-          postGPSPermission(true);
-        }
+        turnGPSOn();
       } else {
         await Toast.show({
           text: "User denied location permission",
@@ -49,6 +39,15 @@ const MapContainer = (props) => {
       }
     }
   };
+
+  const turnGPSOn = async () => {
+    if (Capacitor.isNative) {
+      const canUseGPS = await LocationService.askToTurnOnGPS();
+      postGPSPermission(canUseGPS);
+    } else {
+      postGPSPermission(true);
+    }
+  }
 
   const postGPSPermission = async (canUseGPS: boolean) => {
     if (canUseGPS) {
@@ -75,14 +74,10 @@ const MapContainer = (props) => {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             },
-            // latitude: position.coords.latitude,
-            // longitude: position.coords.longitude,
             loading: false,
           }
         );
         console.log('Received current Location:', state.center)
-        // clearWatch(watchId)
-        // setState({...state, watchId})
         // Stop GPS after some interval
         setTimeout(()=>clearWatch(watchId), 2000)
       });
