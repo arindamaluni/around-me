@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { getDistance } from 'geolib';
 import { add as addIcon } from 'ionicons/icons';
 import React, { useEffect } from 'react';
@@ -68,7 +68,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
           <IonTitle>Current Events</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent >
       {events && 
         <>
           <IonHeader collapse="condense">
@@ -80,12 +80,15 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
             <EventListing eventList={events}/>  
         </>
       }
+
+      </IonContent>   
+      <IonFooter>
         <IonFab vertical="bottom" horizontal="end">
           <IonFabButton routerLink={ROUTE_NEWEVENT}>
             <IonIcon icon={addIcon} />
           </IonFabButton>
         </IonFab>
-      </IonContent>    
+      </IonFooter> 
     </IonPage>
   );
 };
