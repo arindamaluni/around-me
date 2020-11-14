@@ -51,7 +51,7 @@ const LoginPage = (props) => {
       console.log('Login Successful')
       console.log(result);
       const auth = { loggedIn: true, loginMethod:'google', uid:result.id, 
-          email:result.email, displayName:result.name, photoURL:result.imageURL};
+          email:result.email, displayName:result.name, photoURL:result.imageUrl};
       setAuth(auth);
     } catch (err) { console.log(err); }
     

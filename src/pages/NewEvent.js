@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 import * as geofirestore from 'geofirestore';
 import { locationOutline, locationSharp } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import MapContainer from '../components/LocationPicker/MapContainer';
 import { firestore, storage } from '../firebase';
@@ -12,7 +13,7 @@ import { ROUTE_EVENTS } from '../route-constants';
 const {Camera} = Plugins;
 const GeoFirestore = geofirestore.initializeApp(firestore);
 
-const NewEvent =(props) => {
+const NewEvent =({authState}) => {
   
   const [ title, setTitle] = useState('');
   const [ highlight, setHighlight] = useState('');
@@ -23,6 +24,7 @@ const NewEvent =(props) => {
   const [ venue, setVenue] = useState('');
   const [ location, setLocation] = useState({lat:0.0, lng:0.0, address:''});
   const [ locationPickOpen, setLocationPickOpen] = useState(false);
+  const {displayName, photoURL} = authState;
 
   const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png');
   const fileInputRef = useRef();
@@ -64,13 +66,13 @@ const NewEvent =(props) => {
   }
 
   function getEventEntry () {
-    console.log(+dayjs(date))
+    // console.log(+dayjs(date))
     return { 
       date: +dayjs(date), 
       title, highlight, overlay, summary, venue, 
       //the field name must be "coordinates for geofirestore to calculate hashing"
       coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
-      address:location.address, perimeter,
+      address:location.address, perimeter, displayName, photoURL,
       createdAt: new Date().getTime()
     }
   }
@@ -188,4 +190,10 @@ const NewEvent =(props) => {
     </IonPage>
   );
 }
-export default NewEvent ;
+
+const mapStateToProps = ({ authState }) => ({
+  authState
+});
+
+export default connect( mapStateToProps )(NewEvent);
+

@@ -3,7 +3,7 @@ import { getDistance } from 'geolib';
 import { add as addIcon } from 'ionicons/icons';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import EventList from '../components/EventList/EventList';
+import EventListing from '../components/EventListing/EventListing';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
@@ -51,6 +51,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
     
     const distance = getDistance({latitude, longitude}, 
         {latitude:currentLoc.latitude, longitude:currentLoc.longitude})
+    eventItem.distance = distance;
     console.log(distance)
     if (distance <= eventItem?.perimeter) return true;
     console.log('Outside Geo perimeter');
@@ -75,7 +76,8 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
               <IonTitle size="large">Upcoming Events</IonTitle>
             </IonToolbar>
           </IonHeader>
-            <EventList eventList={events}/>   
+            {/* <EventList eventList={events}/>   */}
+            <EventListing eventList={events}/>  
         </>
       }
         <IonFab vertical="bottom" horizontal="end">

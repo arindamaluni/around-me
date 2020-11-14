@@ -47,6 +47,7 @@ const MapContainer = (props) => {
         loading={loading}
         address={address}
         onClose = {onClose}
+        pageTitle = {"Select location"}
       />
     </IonModal>
   );

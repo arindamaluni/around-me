@@ -15,7 +15,7 @@ const Marker = (props:any) => (
   </>
 );
 const MapView = (props: any) => {
-  const { center, getGeoLocation, loading, onClose} = props
+  const { center, getGeoLocation, loading, onClose, pageTitle, readOnly} = props
   // const [state, setState] = useState({});
   const [address, setAddress] = useState('');
   const [currentPick, setCurrentPick] = useState({lat:center.lat, lng:center.lng, addresses:[]})
@@ -23,7 +23,8 @@ const MapView = (props: any) => {
 
   useEffect(() =>{
     setCurrentPick({lat:center.lat, lng:center.lng, addresses:[]});
-    getAddress(center.lat, center.lng, '');
+    if(!readOnly)
+      getAddress(center.lat, center.lng, '');
   }, [center])
 
   // const addressList = useRef<HTMLIonSelectElement>(null);
@@ -61,7 +62,7 @@ const MapView = (props: any) => {
       <IonPage id='main'>
         <IonHeader >
           <IonToolbar color="primary">
-            <IonTitle slot="start">Pick Location</IonTitle>
+            <IonTitle slot="start">{pageTitle}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -74,7 +75,8 @@ const MapView = (props: any) => {
               // defaultCenter={center}
               center={{lat: center.lat, lng: center.lng}}
               defaultZoom={16}
-              onClick={(event)=>{
+              onClick={(event)=>{ 
+                if(readOnly) return;
                 setCurrentPick({...currentPick,lat:event.lat,lng:event.lng})
                 getAddress(event.lat, event.lng, '');
                 // addressList.open();
@@ -83,18 +85,20 @@ const MapView = (props: any) => {
               <Marker lng={currentPick.lng} lat={currentPick.lat} text={''}/>
             </GoogleMapReact>
           </div>}
-
-            <IonSearchbar 
+          {!readOnly && <IonSearchbar 
               className='address' 
               onKeyUp={(e) => {
-                if (e.key === 'Enter') getAddress(currentPick.lat, currentPick.lng, address)
+                if (e.key === 'Enter') {
+                  getAddress(currentPick.lat, currentPick.lng, address);
+                  setAddress('');
+                }
               }} 
               value={address}
               onIonChange={(event) => {
                 setAddress(event.detail.value || '' )/* ;console.log(event); */
               }}
                    /* onIonInput={(e)=>console.log(e)} */ 
-            />
+            />}
 
           {/* <IonItem className='geoAbs'>
             <IonLabel>
@@ -103,7 +107,7 @@ const MapView = (props: any) => {
               <IonText> Address: {currentPick.address}</IonText>
             </IonLabel>            
           </IonItem> */}
-          <IonItem className='geoAbs'>
+          {!readOnly && <><IonItem className='geoAbs'>
             <IonLabel>Address</IonLabel>
             <IonSelect 
               // ref = {addressList}
@@ -121,10 +125,14 @@ const MapView = (props: any) => {
                   </IonSelectOption>)}
             </IonSelect>
           </IonItem>
+          </>
+          }
           <IonFab vertical="center" horizontal="end">
-            <IonFabButton size="small" onClick={getGeoLocation} >
-              <IonIcon md={locateSharp} ios={locateOutline} />
-            </IonFabButton>
+            {!readOnly &&
+              <IonFabButton size="small" onClick={getGeoLocation} >
+                <IonIcon md={locateSharp} ios={locateOutline} />
+              </IonFabButton>
+            }
             <IonFabButton size="small" onClick={()=>{/* console.log(location) */; onClose(location)} }>
               <IonIcon md={arrowBackSharp} ios={arrowBackOutline} defaultValue="Done"/>
             </IonFabButton>
