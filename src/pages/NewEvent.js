@@ -21,6 +21,7 @@ const NewEvent =({authState}) => {
   const [ summary, setSummary] = useState('');
   const [ perimeter, setPerimeter] = useState('');
   const [ date, setDate] = useState(dayjs(Date.now()).format('D MMM YYYY H:mm'));
+  const [ externalLink, setExternalLink] = useState('');
   const [ venue, setVenue] = useState('');
   const [ location, setLocation] = useState({lat:0.0, lng:0.0, address:''});
   const [ locationPickOpen, setLocationPickOpen] = useState(false);
@@ -72,7 +73,7 @@ const NewEvent =({authState}) => {
       title, highlight, overlay, summary, venue, 
       //the field name must be "coordinates for geofirestore to calculate hashing"
       coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
-      address:location.address, perimeter, displayName, photoURL,
+      address:location.address, perimeter, displayName, photoURL, externalLink,
       createdAt: new Date().getTime()
     }
   }
@@ -151,6 +152,12 @@ const NewEvent =({authState}) => {
             />
         </IonItem>
         {/* <IonList> */}
+          <IonItem>
+            <IonLabel position="floating">Site Link</IonLabel>
+            <IonInput value={externalLink} type="text" placeholder="Venue Details"
+              color="primary" onIonChange={(event) => setExternalLink(event.detail.value)}
+            />
+          </IonItem>
           <IonItem>
             <IonLabel position="floating">Venue</IonLabel>
             <IonInput value={venue} type="text" placeholder="Venue Details"
