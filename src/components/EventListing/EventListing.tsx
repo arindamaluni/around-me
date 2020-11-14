@@ -7,12 +7,14 @@ import { bookmarksOutline, bookmarksSharp, chatbubblesOutline, chatbubblesSharp,
 import moment from "moment";
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import Conversation from "../Conversation/Conversation";
 import MapView from "../LocationPicker/MapView";
 import './event-listing.scss';
 
 function EventListing ({events, eventList}) {
 
   const [showMap, setShowMap] = useState({show:false, id:null});
+  const [showConv, setShowConv] = useState({show:false, id:null});
 
   const getMapModal = (event) => {
     // if (event.id !== showMap.id) return;
@@ -27,10 +29,19 @@ function EventListing ({events, eventList}) {
     )
   }
 
+  const getConvModal = (event) => {
+    return (showConv && <IonModal isOpen={showConv.show}>
+      <Conversation
+        event={event}
+        onClose = {()=>setShowConv({show:false, id:null})}
+      />
+    </IonModal>)
+  }
+
   return (
       events.map(event => { 
       return (
-        <IonCard color="light" style={{padding:"5px"}}>
+        <IonCard color="light" style={{padding:"5px"}} key={event.id}>
           <IonItem class="ion-justify-content-between">
             <IonAvatar slot="start">
               <img src={event.photoURL} alt={event.displayName?.charAt(0).toUpperCase()}/>
@@ -80,7 +91,8 @@ function EventListing ({events, eventList}) {
                 <div style={{fontSize:"10px"}}> 4</div>
               </button>
               <button style={{backgroundColor:"transparent", outline:"none"}}>
-                <IonIcon style={{fontSize:"25px"}} color="primary" md={chatbubblesSharp} ios={chatbubblesOutline} />
+                <IonIcon style={{fontSize:"25px"}} color="primary" md={chatbubblesSharp} ios={chatbubblesOutline} 
+                  onClick={()=>setShowConv({show:true, id:event.id})}/>
               </button>
               <button style={{backgroundColor:"transparent", outline:"none"}}>
                 <IonIcon style={{fontSize:"25px"}} color="primary" md={bookmarksSharp} ios={bookmarksOutline} />
@@ -92,6 +104,7 @@ function EventListing ({events, eventList}) {
           </IonFooter>
           //Show the map only for the current selected card
           {(event.id === showMap.id) &&  getMapModal(event)}
+          {(event.id === showConv.id) &&  getConvModal(event)}
           </IonCard>   
         ) 
       }))

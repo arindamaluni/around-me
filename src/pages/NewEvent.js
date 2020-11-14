@@ -51,8 +51,13 @@ const NewEvent =({authState}) => {
   async function submitHandler (e) {
     e.preventDefault();
     try {
+      const conversations = firestore.collection('conversations');
+      const conv = await conversations.add({publisherId:authState.uid});
+      console.log('Conversation')
+
       const entriesRef = GeoFirestore.collection('events');
       const entryData = getEventEntry(); 
+      entryData.conversationId = conv.id;
       console.log(entryData);
       if (!pictureUrl.startsWith('/assets')) {
         entryData.pictureUrl = await savePicture(pictureUrl);
@@ -74,7 +79,7 @@ const NewEvent =({authState}) => {
       //the field name must be "coordinates for geofirestore to calculate hashing"
       coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
       address:location.address, perimeter, displayName, photoURL, externalLink,
-      createdAt: new Date().getTime()
+      publisherId:authState.uid, createdAt: new Date().getTime()
     }
   }
 
