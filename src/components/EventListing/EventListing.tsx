@@ -40,7 +40,10 @@ function EventListing ({events, eventList}) {
                   <h5>{event.displayName} </h5>
                   {event.createdAt && <p style={{fontSize:"10px", color:"#FF0077"}}>Posted : {moment.utc(1605342597947).format('ll')}</p> }
                 </div>
-                <IonLabel slot="end" color="primary" class="ion-text-uppercase ion-text-end ion-padding " ><div style={{ display:"inline-block", borderWidth:"2px", borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} > Available</div></IonLabel>
+                <div slot="end" style= {{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+                  <IonLabel color="primary" class="ion-text-uppercase" ><div style={{ display:"inline-block", borderWidth:"2px", borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} > Available</div></IonLabel>
+                  
+                </div>
           </IonItem>
           <div style={{position:"relative"}}>      
             <img src={event.pictureUrl} style={{width: "100%"}} alt="" />
@@ -68,6 +71,7 @@ function EventListing ({events, eventList}) {
                 color="primary" size="large" onClick={()=>setShowMap(true)}
               />
             <p style={{paddingLeft:"4px"}}>{event.venue}</p>
+            <p style={{display:"inline-block",fontSize:"10px", fontWeight:"bold", backgroundColor:"#FF0077", color:"white", padding:"5px", borderRadius:"4px"}}>{(event.distance/1000).toFixed(2)} Km.</p>
             <p>{event.address}</p>
           </IonCardContent>
           <IonFooter>
