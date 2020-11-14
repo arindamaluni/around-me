@@ -12,15 +12,14 @@ import './event-listing.scss';
 
 function EventListing ({events, eventList}) {
 
-  const [showMap, setShowMap] = useState(false);
-
-  console.log('Rendering New Item')
+  const [showMap, setShowMap] = useState({show:false, id:null});
 
   const getMapModal = (event) => {
-    return (showMap && <IonModal isOpen={showMap}>
+    // if (event.id !== showMap.id) return;
+    return (showMap && <IonModal isOpen={showMap.show}>
       <MapView
         center={{lat:event.coordinates.latitude, lng:event.coordinates.longitude}}
-        onClose = {()=>setShowMap(false)}
+        onClose = {()=>setShowMap({show:false, id:null})}
         pageTitle = {"Venue location"}
         readOnly = {true}
       />
@@ -68,7 +67,7 @@ function EventListing ({events, eventList}) {
           </IonCardContent>
           <IonCardContent class="ion-text-center" style={{fontSize:"15px", color:"#FF0077"}}>
             <IonIcon slot="end" md={locationSharp} ios={locationOutline} 
-                color="primary" size="large" onClick={()=>setShowMap(true)}
+                color="primary" size="large" onClick={()=>setShowMap({show:true, id:event.id})}
               />
             <p style={{paddingLeft:"4px"}}>{event.venue}</p>
             <p style={{display:"inline-block",fontSize:"10px", fontWeight:"bold", backgroundColor:"#FF0077", color:"white", padding:"5px", borderRadius:"4px"}}>{(event.distance/1000).toFixed(2)} Km.</p>
@@ -91,7 +90,8 @@ function EventListing ({events, eventList}) {
               </button>
             </div>
           </IonFooter>
-          {getMapModal(event)}
+          //Show the map only for the current selected card
+          {(event.id === showMap.id) &&  getMapModal(event)}
           </IonCard>   
         ) 
       }))
