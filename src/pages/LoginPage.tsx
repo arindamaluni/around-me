@@ -21,7 +21,9 @@ import { Redirect } from 'react-router';
 import { auth } from '../firebase';
 import { ROUTE_EVENTS, ROUTE_REGISTER } from '../route-constants';
 import setAuthAction from '../store/action-creators/auth-actions';
+import setProfile from '../store/action-creators/profile-actions';
 import google from '../theme/google.svg';
+import loadProfile, { saveOrUpdateProfile } from '../utils/ProfileDBHandler';
 
 const LoginPage = (props) => {
   console.log(props)
@@ -45,7 +47,7 @@ const LoginPage = (props) => {
   };
 
   const loginGoogleNative = async () => {
-    const { setAuth } = props;
+    const { setAuth, setProfile } = props;
     try {
       const result = await Plugins.GoogleAuth.signIn();
       console.log('Login Successful')
@@ -53,6 +55,13 @@ const LoginPage = (props) => {
       const auth = { loggedIn: true, loginMethod:'google', uid:result.id, 
           email:result.email, displayName:result.name, photoURL:result.imageUrl};
       setAuth(auth);
+      let profile = await loadProfile(result.uid)
+      console.log(profile);
+      if (!profile)
+        profile = await saveOrUpdateProfile({uid:result.id, email:result.email, displayName:result.name, photoURL:result.imageUrl});
+      
+      console.log(profile);
+      setProfile({profile});
     } catch (err) { console.log(err); }
     
   }
@@ -105,7 +114,8 @@ const mapStateToProps = ({ authState }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setAuth (auth) { dispatch(setAuthAction(auth)) }
+  setAuth (auth) { dispatch(setAuthAction(auth)) },
+  setProfile (profile) { dispatch(setProfile(profile)) }
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )(LoginPage);

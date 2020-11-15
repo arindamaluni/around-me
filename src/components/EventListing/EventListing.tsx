@@ -6,12 +6,11 @@ import {
 import { bookmarksOutline, bookmarksSharp, chatbubblesOutline, chatbubblesSharp, locationOutline, locationSharp, thumbsUpOutline, thumbsUpSharp, trashOutline, trashSharp } from 'ionicons/icons';
 import moment from "moment";
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import Conversation from "../Conversation/Conversation";
 import MapView from "../LocationPicker/MapView";
 import './event-listing.scss';
 
-function EventListing ({events, eventList}) {
+function EventListing ({eventList, authState, userProfile, addToFavList, removeFromFavList, addToDiscardedList}) {
 
   const [showMap, setShowMap] = useState({show:false, id:null});
   const [showConv, setShowConv] = useState({show:false, id:null});
@@ -39,7 +38,7 @@ function EventListing ({events, eventList}) {
   }
 
   return (
-      events.map(event => { 
+    eventList.map(event => { 
       return (
         <IonCard color="light" style={{padding:"5px"}} key={event.id}>
           <IonItem class="ion-justify-content-between">
@@ -102,15 +101,12 @@ function EventListing ({events, eventList}) {
               </button>
             </div>
           </IonFooter>
-          //Show the map only for the current selected card
+          {/* Show the map only for the current selected card */}
           {(event.id === showMap.id) &&  getMapModal(event)}
           {(event.id === showConv.id) &&  getConvModal(event)}
           </IonCard>   
         ) 
       }))
 }
-const mapStateToProps = ({ authState, events }) => ({
-  authState, events
-});
 
-export default connect( mapStateToProps )(EventListing);
+export default EventListing;

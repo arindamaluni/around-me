@@ -7,10 +7,22 @@ import EventListing from '../components/EventListing/EventListing';
 import { firestore } from '../firebase';
 import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
+import setLastLocation, { addToDiscardedList, addToFavList, removeFromFavList } from '../store/action-creators/profile-actions';
 import { EventItem } from '../types';
 
-const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
+const Events = ({ authState, events, location, setEvents, addNewEvents,
+  profile, setLastLocation, addToFavList, removeFromFavList, addToDiscardedList}) => {
 
+  function getValidLocation () {
+    let currentLocation = location;
+    if (currentLocation.latitude === 0) {
+      currentLocation = profile.lastLocation;
+    } else {
+      setLastLocation({latitude:location.latitude, longitude:location.longitude})
+    }
+    return currentLocation;
+  }
+  
   useEffect(() => {
     // Get current user location
     // Get snapshot of all future events
@@ -19,7 +31,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
     .then(({docs}) => {
       const events = docs.map(EventItem.toEventItem)
                           .filter(doc=>
-                            isWithinPerimeter(doc, location));
+                            isWithinPerimeter(doc, getValidLocation()));
       setEvents(events);
     });
     console.log('First fetch Called');
@@ -36,7 +48,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
         console.log('New Event posted.....');
         addNewEvents(
           docs.map(EventItem.toEventItem)
-          .filter(doc=>isWithinPerimeter(doc, location))
+          .filter(doc=>isWithinPerimeter(doc, getValidLocation()))
           )},
           (err)=> {console.log(err)})
   }, [addNewEvents, location])
@@ -77,7 +89,13 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
             </IonToolbar>
           </IonHeader>
             {/* <EventList eventList={events}/>   */}
-            <EventListing eventList={events}/>  
+            <EventListing eventList={events} 
+              authState={authState}
+              userProfile={profile}
+              addToFavList={addToFavList}
+              removeFromFavList={removeFromFavList}
+              addToDiscardedList={addToDiscardedList} 
+            />  
         </>
       }
 
@@ -93,13 +111,17 @@ const Events = ({ authState, events, location, setEvents, addNewEvents}) => {
   );
 };
 
-const mapStateToProps = ({ authState, events, location }) => ({
-  authState, events, location
+const mapStateToProps = ({ authState, events, location, profile }) => ({
+  authState, events, location, profile
 });
 
 const mapDispatchToProps = dispatch => ({
   setEvents (events) { dispatch(storeEvents(events)) },
-  addNewEvents (events) { dispatch(addEvents(events)) }
+  addNewEvents (events) { dispatch(addEvents(events)) },
+  setLastLocation (location) { dispatch(setLastLocation(location)) },
+  addToFavList (eventId) { dispatch(addToFavList(eventId)) },
+  removeFromFavList (eventId) { dispatch(removeFromFavList(eventId)) },
+  addToDiscardedList (eventId) { dispatch(addToDiscardedList(eventId)) }
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )(Events);
