@@ -10,7 +10,7 @@ import Conversation from "../Conversation/Conversation";
 import MapView from "../LocationPicker/MapView";
 import './event-listing.scss';
 
-function EventListing ({eventList, authState, userProfile, addToFavList, removeFromFavList, addToDiscardedList}) {
+function EventListing ({eventList, authState, userProfile, toggleFavourite, addToDiscardedList}) {
 
   const [showMap, setShowMap] = useState({show:false, id:null});
   const [showConv, setShowConv] = useState({show:false, id:null});
@@ -94,7 +94,9 @@ function EventListing ({eventList, authState, userProfile, addToFavList, removeF
                   onClick={()=>setShowConv({show:true, id:event.id})}/>
               </button>
               <button style={{backgroundColor:"transparent", outline:"none"}}>
-                <IonIcon style={{fontSize:"25px"}} color="primary" md={bookmarksSharp} ios={bookmarksOutline} />
+                <IonIcon style={{fontSize:"25px"}} color={ userProfile.favList.includes(event.id)? "medium":"primary" } 
+                  md={bookmarksSharp} ios={bookmarksOutline} 
+                  onClick={()=>toggleFavourite(event.id)}/>
               </button>
               <button style={{backgroundColor:"transparent", outline:"none"}}>
                 <IonIcon style={{fontSize:"25px"}} color="primary" md={trashSharp} ios={trashOutline} />

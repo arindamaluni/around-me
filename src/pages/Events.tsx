@@ -9,6 +9,7 @@ import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
 import setLastLocation, { addToDiscardedList, addToFavList, removeFromFavList } from '../store/action-creators/profile-actions';
 import { EventItem } from '../types';
+import { saveOrUpdateProfile } from '../utils/ProfileDBHandler';
 
 const Events = ({ authState, events, location, setEvents, addNewEvents,
   profile, setLastLocation, addToFavList, removeFromFavList, addToDiscardedList}) => {
@@ -69,6 +70,17 @@ const Events = ({ authState, events, location, setEvents, addNewEvents,
     console.log('Outside Geo perimeter');
     return false;
   }
+
+  const toggleFavourite = (eventId) => {
+    console.log(profile.favList, eventId)
+    if (profile.favList.includes(eventId)) {
+      removeFromFavList(eventId)
+    } else {
+      addToFavList(eventId)
+    }
+    console.log(profile)
+    saveOrUpdateProfile(profile)
+  }
  
   return (
     <IonPage>
@@ -92,8 +104,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents,
             <EventListing eventList={events} 
               authState={authState}
               userProfile={profile}
-              addToFavList={addToFavList}
-              removeFromFavList={removeFromFavList}
+              toggleFavourite={toggleFavourite}
               addToDiscardedList={addToDiscardedList} 
             />  
         </>
@@ -118,10 +129,10 @@ const mapStateToProps = ({ authState, events, location, profile }) => ({
 const mapDispatchToProps = dispatch => ({
   setEvents (events) { dispatch(storeEvents(events)) },
   addNewEvents (events) { dispatch(addEvents(events)) },
-  setLastLocation (location) { dispatch(setLastLocation(location)) },
-  addToFavList (eventId) { dispatch(addToFavList(eventId)) },
-  removeFromFavList (eventId) { dispatch(removeFromFavList(eventId)) },
-  addToDiscardedList (eventId) { dispatch(addToDiscardedList(eventId)) }
+  setLastLocation (location) { dispatch(setLastLocation({location})) },
+  addToFavList (eventId) { dispatch(addToFavList({eventId})) },
+  removeFromFavList (eventId) { dispatch(removeFromFavList({eventId})) },
+  addToDiscardedList (eventId) { dispatch(addToDiscardedList({eventId})) }
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )(Events);

@@ -14,7 +14,10 @@ export default async function loadProfile (uid) {
 }
 
 export async function saveOrUpdateProfile (profile) {
-  if (!profile.uid) throw new Error('uid for the profile is nonexistent')
+  if (!profile.uid || profile.uid==='') {
+    console.log('uid for the profile is nonexistent')
+    return null;
+  }
   try {
     console.log('Creating Profile:', profile)
     const entriesRef = firestore.collection('users').doc(profile.uid)
