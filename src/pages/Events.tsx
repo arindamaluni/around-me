@@ -1,4 +1,5 @@
 import {
+  IonBackButton,
   IonButtons,
   IonContent,
   IonFab,
@@ -6,6 +7,8 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
+  IonItem,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonTitle,
@@ -17,7 +20,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import EventListing from '../components/EventListing/EventListing';
 import {firestore} from '../firebase';
-import {ROUTE_NEWEVENT} from '../route-constants';
+import {ROUTE_EVENTS, ROUTE_NEWEVENT} from '../route-constants';
 import {addEvents, storeEvents} from '../store/action-creators/event-actions';
 import setLastLocation, {
   addToDiscardedList,
@@ -39,6 +42,7 @@ const Events = ({
   addToFavList,
   removeFromFavList,
   addToDiscardedList,
+  mode,
 }) => {
   function getValidLocation() {
     let currentLocation = location;
@@ -54,6 +58,8 @@ const Events = ({
   }
 
   useEffect(() => {
+    console.log(mode);
+    if (mode) return;
     // Get current user location
     // Get snapshot of all future events
     const entriesRef = firestore.collection('events');
@@ -70,6 +76,7 @@ const Events = ({
   }, [setEvents]);
 
   useEffect(() => {
+    if (mode) return;
     //Subscribe to realtime update on new events
     //The return is to ensure unsubscribe is called on unmount
     const entriesRef = firestore.collection('events');
@@ -91,6 +98,12 @@ const Events = ({
         },
       );
   }, [addNewEvents, location]);
+
+  //Prepare display eventlist based on mode
+  let eventList = events;
+  if (mode) {
+    eventList = events.filter(event => profile.favList.includes(event.id));
+  }
 
   const isWithinPerimeter = (eventItem, currentLoc) => {
     // console.log(eventItem, currentLoc);
@@ -130,7 +143,7 @@ const Events = ({
   };
 
   const discardOrWithdraw = (eventId, availability = null) => {
-    const event = events.find(event => event.id === eventId);
+    const event = eventList.find(event => event.id === eventId);
     if (event && event.publisherId === profile.uid) {
       event.availability = availability;
       saveOrUpdateEvent({id: eventId, availability});
@@ -145,13 +158,17 @@ const Events = ({
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonMenuButton />
+            {mode ? (
+              <IonMenuButton />
+            ) : (
+              <IonBackButton defaultHref={ROUTE_EVENTS} />
+            )}
           </IonButtons>
           <IonTitle>Current Events</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {events && (
+        {eventList.length && (
           <>
             <IonHeader collapse="condense">
               <IonToolbar>
@@ -160,13 +177,18 @@ const Events = ({
             </IonHeader>
             {/* <EventList eventList={events}/>   */}
             <EventListing
-              eventList={events}
+              eventList={eventList}
               authState={authState}
               userProfile={profile}
               toggleFavourite={toggleFavourite}
               discardOrWithdraw={discardOrWithdraw}
             />
           </>
+        )}
+        {!eventList.length && (
+          <IonItem>
+            <IonLabel>No posts for display</IonLabel>
+          </IonItem>
         )}
       </IonContent>
       <IonFooter>

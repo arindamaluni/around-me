@@ -10,7 +10,6 @@ import {default as useAuthInit} from './auth';
 import Menu from './components/Menu';
 /* Theme variables */
 import './global.scss';
-import BookMarkList from './pages/BookMarkList';
 import Events from './pages/Events';
 import LoginPage from './pages/LoginPage';
 import LogOutPage from './pages/LogOutPage';
@@ -59,8 +58,8 @@ const App: React.FC = () => {
               />
               <Route
                 path={constants.ROUTE_BOOKMARKED}
-                component={BookMarkList}
                 exact
+                render={props => <Events {...props} mode={'favourite'} />}
               />
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>
