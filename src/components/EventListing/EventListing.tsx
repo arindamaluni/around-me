@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonAvatar,
   IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonFooter,
   IonIcon, IonItem, IonLabel, IonModal
@@ -10,10 +11,11 @@ import Conversation from "../Conversation/Conversation";
 import MapView from "../LocationPicker/MapView";
 import './event-listing.scss';
 
-function EventListing ({eventList, authState, userProfile, toggleFavourite, addToDiscardedList}) {
+function EventListing ({eventList, authState, userProfile, toggleFavourite, discardOrWithdraw}) {
 
   const [showMap, setShowMap] = useState({show:false, id:null});
   const [showConv, setShowConv] = useState({show:false, id:null});
+  const [showAlert, setShowAlert] = useState ({show:false, id:null});
 
   const getMapModal = (event) => {
     // if (event.id !== showMap.id) return;
@@ -37,8 +39,64 @@ function EventListing ({eventList, authState, userProfile, toggleFavourite, addT
     </IonModal>)
   }
 
+  const ionAlert = <IonAlert
+    isOpen={showAlert.show}
+    onDidDismiss={() => setShowAlert({show:false, id:null})}
+    cssClass='my-custom-class'
+    header={'Invalidate Post'}
+    message={'Your post will not be deleted but updated with a reason. Please select from following '}
+    inputs={[
+      {
+        name: 'Withdrawn',
+        type: 'radio',
+        label: 'Withdrawn',
+        value: 'withdrawn',
+        checked: true
+      },
+      {
+        name: 'Cancelled',
+        type: 'radio',
+        label: 'Cancelled',
+        value: 'cancelled'
+      },
+      {
+        name: 'Sold Out',
+        type: 'radio',
+        label: 'Sold Out',
+        value: 'sold'
+      },
+    ]}
+    buttons={[
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (discardReason) => {
+          console.log('Confirm Cancel', discardReason, showAlert);
+        }
+      },
+      {
+        text: 'Ok',
+        handler: (discardReason) => {
+          if (discardReason) {
+            console.log('Confirm Cancel', discardReason, showAlert);
+            discardOrWithdraw(showAlert.id, discardReason)
+          }
+        }
+      }
+    ]}
+  />
+
+  const handleEventDiscard =(event) => {
+    if (event.publisherId !== userProfile.uid) 
+      discardOrWithdraw(event.id)
+    else
+      setShowAlert({show:true, id:event.id})
+  }
+
   return (
     eventList.map(event => { 
+      if (userProfile.discardedList.includes(event.id)) return <div key={event.id}></div>;
       return (
         <IonCard color="light" style={{padding:"5px"}} key={event.id}>
           <IonItem class="ion-justify-content-between">
@@ -99,13 +157,15 @@ function EventListing ({eventList, authState, userProfile, toggleFavourite, addT
                   onClick={()=>toggleFavourite(event.id)}/>
               </button>
               <button style={{backgroundColor:"transparent", outline:"none"}}>
-                <IonIcon style={{fontSize:"25px"}} color="primary" md={trashSharp} ios={trashOutline} />
+                <IonIcon style={{fontSize:"25px"}} color="primary" md={trashSharp} ios={trashOutline} 
+                  onClick={() => handleEventDiscard(event)}/>
               </button>
             </div>
           </IonFooter>
           {/* Show the map only for the current selected card */}
           {(event.id === showMap.id) &&  getMapModal(event)}
           {(event.id === showConv.id) &&  getConvModal(event)}
+          {ionAlert}
           </IonCard>   
         ) 
       }))

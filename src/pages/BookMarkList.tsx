@@ -9,7 +9,6 @@ import { ROUTE_NEWEVENT } from '../route-constants';
 import { addEvents, storeEvents } from '../store/action-creators/event-actions';
 import setLastLocation, { addToDiscardedList, addToFavList, removeFromFavList } from '../store/action-creators/profile-actions';
 import { EventItem } from '../types';
-import { saveOrUpdateEvent } from '../utils/EventDBHandler';
 import { saveOrUpdateProfile } from '../utils/ProfileDBHandler';
 
 const Events = ({ authState, events, location, setEvents, addNewEvents,
@@ -73,6 +72,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents,
   }
 
   const toggleFavourite = (eventId) => {
+    console.log(profile.favList, eventId)
     if (profile.favList.includes(eventId)) {
       removeFromFavList(eventId)
     } else {
@@ -80,17 +80,6 @@ const Events = ({ authState, events, location, setEvents, addNewEvents,
     }
     console.log(profile)
     saveOrUpdateProfile(profile)
-  }
-
-  const discardOrWithdraw = (eventId, availability=null) => {
-    const event = events.find(event => event.id ===eventId);
-    if (event && event.publisherId === profile.uid) {
-      event.availability=availability
-      saveOrUpdateEvent({id:eventId, availability})
-    } else if (event) {
-      addToDiscardedList(eventId);
-      saveOrUpdateProfile(profile)
-    }
   }
  
   return (
@@ -116,7 +105,7 @@ const Events = ({ authState, events, location, setEvents, addNewEvents,
               authState={authState}
               userProfile={profile}
               toggleFavourite={toggleFavourite}
-              discardOrWithdraw={discardOrWithdraw} 
+              discardOrWithdraw={addToDiscardedList} 
             />  
         </>
       }

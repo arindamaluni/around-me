@@ -15,5 +15,5 @@ export function removeFromFavList (eventId) {
 }
 
 export function addToDiscardedList (eventId) {
-  return { type: "REMOVE_FROM_FAB_LIST", payload: eventId}
+  return { type: "ADD_TO_DISCARDED_LIST", payload: eventId}
 }

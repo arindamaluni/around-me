@@ -9,11 +9,11 @@ import {
   IonMenuToggle,
   IonNote
 } from '@ionic/react';
-import { calendarClearOutline, calendarClearSharp, calendarOutline, calendarSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
+import { bookmarksOutline, bookmarksSharp, calendarClearOutline, calendarClearSharp, calendarOutline, calendarSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { ROUTE_EVENTS, ROUTE_EVENT_TEMP, ROUTE_LOGIN, ROUTE_LOGOUT, ROUTE_NEWEVENT } from '../route-constants';
+import { ROUTE_BOOKMARKED, ROUTE_EVENTS, ROUTE_EVENT_TEMP, ROUTE_LOGIN, ROUTE_LOGOUT, ROUTE_NEWEVENT } from '../route-constants';
 import './Menu.css';
 
 
@@ -65,6 +65,13 @@ const loginPages: AppPage[] = [
     url: ROUTE_LOGOUT,
     iosIcon: logOutOutline,
     mdIcon: logOutSharp,
+    displayWhileLoggedIn: true
+  }, 
+  {
+    title: 'Bookmarked',
+    url: ROUTE_BOOKMARKED, 
+    iosIcon: bookmarksOutline,
+    mdIcon: bookmarksSharp,
     displayWhileLoggedIn: true
   },
 ]

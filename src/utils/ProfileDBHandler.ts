@@ -29,7 +29,7 @@ export async function saveOrUpdateProfile (profile) {
       await entriesRef.update(profile);
     }
     const userData = await entriesRef.get();
-    console.log(userData)
+    console.log(userData.data())
     return userData.data();
   } catch (err) {
     console.log('Error Updating profile', err)
