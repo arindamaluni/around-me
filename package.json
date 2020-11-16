@@ -44,7 +44,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.(js|ts|json)\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,7 +63,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.2"
+    "@capacitor/cli": "2.4.2",
+    "prettier": "^2.1.2"
   },
   "description": "An Ionic project"
 }

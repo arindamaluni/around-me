@@ -9,9 +9,9 @@
       "launchShowDuration": 0
     },
     "GoogleAuth": {
-      "scopes": ["profile","email"],
+      "scopes": ["profile", "email"],
       "serverClientId": "958820447540-iri1od74m2992rgrj18mhthai9khseje.apps.googleusercontent.com"
-      }
+    }
   },
   "cordova": {},
   "linuxAndroidStudioPath": "/snap/bin/android-studio"

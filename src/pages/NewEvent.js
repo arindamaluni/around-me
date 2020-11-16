@@ -1,4 +1,4 @@
-import { CameraResultType, CameraSource, Plugins } from "@capacitor/core";
+import {CameraResultType, CameraSource, Plugins} from '@capacitor/core';
 import {
   IonBackButton,
   IonButton,
@@ -15,78 +15,78 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
-  isPlatform
-} from "@ionic/react";
-import dayjs from "dayjs";
-import firebase from "firebase/app";
-import * as geofirestore from "geofirestore";
-import { locationOutline, locationSharp } from "ionicons/icons";
-import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router";
-import MapContainer from "../components/LocationPicker/MapContainer";
-import { firestore, storage } from "../firebase";
-import { ROUTE_EVENTS } from "../route-constants";
-const { Camera } = Plugins;
+  isPlatform,
+} from '@ionic/react';
+import dayjs from 'dayjs';
+import firebase from 'firebase/app';
+import * as geofirestore from 'geofirestore';
+import {locationOutline, locationSharp} from 'ionicons/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {connect} from 'react-redux';
+import {useHistory} from 'react-router';
+import MapContainer from '../components/LocationPicker/MapContainer';
+import {firestore, storage} from '../firebase';
+import {ROUTE_EVENTS} from '../route-constants';
+const {Camera} = Plugins;
 const GeoFirestore = geofirestore.initializeApp(firestore);
 
-const NewEvent = ({ authState }) => {
-  const [title, setTitle] = useState("");
-  const [highlight, setHighlight] = useState("");
-  const [overlay, setOverlay] = useState("");
-  const [summary, setSummary] = useState("");
-  const [perimeter, setPerimeter] = useState("");
-  const [date, setDate] = useState(dayjs(Date.now()).format("D MMM YYYY H:mm"));
-  const [externalLink, setExternalLink] = useState("");
-  const [venue, setVenue] = useState("");
-  const [location, setLocation] = useState({ lat: 0.0, lng: 0.0, address: "" });
+const NewEvent = ({authState}) => {
+  const [title, setTitle] = useState('');
+  const [highlight, setHighlight] = useState('');
+  const [overlay, setOverlay] = useState('');
+  const [summary, setSummary] = useState('');
+  const [perimeter, setPerimeter] = useState('');
+  const [date, setDate] = useState(dayjs(Date.now()).format('D MMM YYYY H:mm'));
+  const [externalLink, setExternalLink] = useState('');
+  const [venue, setVenue] = useState('');
+  const [location, setLocation] = useState({lat: 0.0, lng: 0.0, address: ''});
   const [locationPickOpen, setLocationPickOpen] = useState(false);
-  const { displayName, photoURL } = authState;
+  const {displayName, photoURL} = authState;
 
-  const [pictureUrl, setPictureUrl] = useState("/assets/placeholder.png");
+  const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png');
   const fileInputRef = useRef();
   const history = useHistory();
 
   useEffect(
     () => () => {
-      if (pictureUrl.startsWith("blob:")) {
+      if (pictureUrl.startsWith('blob:')) {
         URL.revokeObjectURL(pictureUrl);
       }
     },
-    [pictureUrl]
+    [pictureUrl],
   );
 
   async function savePicture(blobUrl) {
     const pictureRef = storage.ref(
       `/events/pictures/${
         Math.trunc(Math.random * 10000).toString() + Date.now()
-      }`
+      }`,
     );
     const response = await fetch(blobUrl);
     const blob = await response.blob();
     const snapshot = await pictureRef.put(blob);
     const url = await snapshot.ref.getDownloadURL();
-    console.log("saved picture:", url);
+    console.log('saved picture:', url);
     return url;
   }
 
   async function submitHandler(e) {
     e.preventDefault();
     try {
-      const conversations = firestore.collection("conversations");
-      const conv = await conversations.add({ publisherId: authState.uid });
-      console.log("Conversation");
+      const conversations = firestore.collection('conversations');
+      const conv = await conversations.add({publisherId: authState.uid});
+      console.log('Conversation');
 
-      const entriesRef = GeoFirestore.collection("events");
+      const entriesRef = GeoFirestore.collection('events');
       const entryData = getEventEntry();
       entryData.conversationId = conv.id;
       console.log(entryData);
-      if (!pictureUrl.startsWith("/assets")) {
+      if (!pictureUrl.startsWith('/assets')) {
         entryData.pictureUrl = await savePicture(pictureUrl);
       }
       console.log(entryData.pictureUrl);
       const entryRef = await entriesRef.add(entryData);
-      console.log("saved:", entryRef.id);
+      console.log('saved:', entryRef.id);
       history.goBack();
     } catch (err) {
       console.log(err);
@@ -114,7 +114,7 @@ const NewEvent = ({ authState }) => {
     };
   }
 
-  const handleFileChange = (event) => {
+  const handleFileChange = event => {
     if (event.target.files.length > 0) {
       const file = event.target.files.item(0);
       const pictureUrl = URL.createObjectURL(file);
@@ -123,7 +123,7 @@ const NewEvent = ({ authState }) => {
   };
 
   const handlePictureClick = async () => {
-    if (isPlatform("capacitor")) {
+    if (isPlatform('capacitor')) {
       try {
         const photo = await Camera.getPhoto({
           resultType: CameraResultType.Uri,
@@ -132,15 +132,15 @@ const NewEvent = ({ authState }) => {
         });
         setPictureUrl(photo.webPath);
       } catch (error) {
-        console.log("Camera error:", error);
+        console.log('Camera error:', error);
       }
     } else {
       fileInputRef.current.click();
     }
   };
 
-  const storeLocation = (location) => {
-    console.log("NewEvent:storeLocation -> location", location);
+  const storeLocation = location => {
+    console.log('NewEvent:storeLocation -> location', location);
     setLocation(location);
     setLocationPickOpen(false);
   };
@@ -162,9 +162,9 @@ const NewEvent = ({ authState }) => {
             value={date}
             color="primary"
             displayFormat="D MMM YYYY H:mm"
-            min={dayjs().format("YYYY-MM-DDTHH:mm")}
+            min={dayjs().format('YYYY-MM-DDTHH:mm')}
             max="2500"
-            onIonChange={(event) => setDate(event.detail.value)}
+            onIonChange={event => setDate(event.detail.value)}
           />
         </IonItem>
         <IonItem>
@@ -174,7 +174,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Headline of the Event"
             color="primary"
-            onIonChange={(event) => setTitle(event.detail.value)}
+            onIonChange={event => setTitle(event.detail.value)}
           />
         </IonItem>
         <IonItem>
@@ -184,7 +184,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Highlight your events here/ See preview"
             color="primary"
-            onIonChange={(event) => setHighlight(event.detail.value)}
+            onIonChange={event => setHighlight(event.detail.value)}
           />
         </IonItem>
         <IonItem>
@@ -194,7 +194,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Event summary (500 letters)"
             color="primary"
-            onIonChange={(event) => setSummary(event.detail.value)}
+            onIonChange={event => setSummary(event.detail.value)}
           />
         </IonItem>
         <IonItem>
@@ -204,7 +204,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Your Overlay Text/Optional"
             color="primary"
-            onIonChange={(event) => setOverlay(event.detail.value)}
+            onIonChange={event => setOverlay(event.detail.value)}
           />
         </IonItem>
         {/* <IonList> */}
@@ -215,7 +215,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Venue Details"
             color="primary"
-            onIonChange={(event) => setExternalLink(event.detail.value)}
+            onIonChange={event => setExternalLink(event.detail.value)}
           />
         </IonItem>
         <IonItem>
@@ -225,7 +225,7 @@ const NewEvent = ({ authState }) => {
             type="text"
             placeholder="Venue Details"
             color="primary"
-            onIonChange={(event) => setVenue(event.detail.value)}
+            onIonChange={event => setVenue(event.detail.value)}
           />
         </IonItem>
         <IonItem
@@ -260,7 +260,7 @@ const NewEvent = ({ authState }) => {
             type="number"
             placeholder="Your realtime notification perimeter"
             color="primary"
-            onIonChange={(event) => setPerimeter(event.detail.value)}
+            onIonChange={event => setPerimeter(event.detail.value)}
           />
         </IonItem>
 
@@ -279,7 +279,7 @@ const NewEvent = ({ authState }) => {
           <img
             src={pictureUrl}
             alt=""
-            style={{ cursor: "pointer" }}
+            style={{cursor: 'pointer'}}
             onClick={handlePictureClick}
           />
         </IonItem>
@@ -299,7 +299,7 @@ const NewEvent = ({ authState }) => {
   );
 };
 
-const mapStateToProps = ({ authState }) => ({
+const mapStateToProps = ({authState}) => ({
   authState,
 });
 

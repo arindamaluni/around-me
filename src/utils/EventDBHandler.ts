@@ -1,11 +1,11 @@
-import { firestore } from "../firebase";
+import {firestore} from '../firebase';
 
 export async function saveOrUpdateEvent(event) {
   try {
-    console.log("Updating Event:", event);
-    const entriesRef = firestore.collection("events").doc(event.id);
+    console.log('Updating Event:', event);
+    const entriesRef = firestore.collection('events').doc(event.id);
     let ev = await entriesRef.get();
-    console.log("Event:", ev);
+    console.log('Event:', ev);
     if (!ev.exists) {
       await entriesRef.set(event);
     } else {
@@ -15,6 +15,6 @@ export async function saveOrUpdateEvent(event) {
     console.log(evData);
     return evData.data();
   } catch (err) {
-    console.log("Error Updating event", err);
+    console.log('Error Updating event', err);
   }
 }

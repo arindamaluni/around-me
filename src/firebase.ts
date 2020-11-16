@@ -1,17 +1,17 @@
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 // import firebase from 'firebase';
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDdklRLWgGr1hvQTAHgDeconA4D19ZWftM",
-  authDomain: "around-a86ff.firebaseapp.com",
-  databaseURL: "https://around-a86ff.firebaseio.com",
-  projectId: "around-a86ff",
-  storageBucket: "around-a86ff.appspot.com",
-  messagingSenderId: "958820447540",
-  appId: "1:958820447540:web:0b601e35e8b1a405642161",
+  apiKey: 'AIzaSyDdklRLWgGr1hvQTAHgDeconA4D19ZWftM',
+  authDomain: 'around-a86ff.firebaseapp.com',
+  databaseURL: 'https://around-a86ff.firebaseio.com',
+  projectId: 'around-a86ff',
+  storageBucket: 'around-a86ff.appspot.com',
+  messagingSenderId: '958820447540',
+  appId: '1:958820447540:web:0b601e35e8b1a405642161',
 };
 
 export const app = firebase.initializeApp(firebaseConfig);

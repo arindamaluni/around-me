@@ -11,7 +11,7 @@ export class EventItem {
   venue: string;
 
   static toEventItem(doc) {
-    const { date } = doc.data();
-    return { id: doc.id, ...doc.data(), ...{ date: new Date(date) } };
+    const {date} = doc.data();
+    return {id: doc.id, ...doc.data(), ...{date: new Date(date)}};
   }
 }
