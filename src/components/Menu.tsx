@@ -7,8 +7,8 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote
-} from "@ionic/react";
+  IonNote,
+} from '@ionic/react';
 import {
   bookmarksOutline,
   bookmarksSharp,
@@ -19,19 +19,19 @@ import {
   logInOutline,
   logInSharp,
   logOutOutline,
-  logOutSharp
-} from "ionicons/icons";
-import React from "react";
-import { connect } from "react-redux";
-import { useLocation } from "react-router-dom";
+  logOutSharp,
+} from 'ionicons/icons';
+import React from 'react';
+import {connect} from 'react-redux';
+import {useLocation} from 'react-router-dom';
 import {
   ROUTE_BOOKMARKED,
   ROUTE_EVENTS,
   ROUTE_LOGIN,
   ROUTE_LOGOUT,
-  ROUTE_NEWEVENT
-} from "../route-constants";
-import "./Menu.css";
+  ROUTE_NEWEVENT,
+} from '../route-constants';
+import './Menu.css';
 
 interface AppPage {
   url: string;
@@ -43,14 +43,14 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: "New Event",
+    title: 'New Event',
     url: ROUTE_NEWEVENT,
     iosIcon: calendarClearOutline,
     mdIcon: calendarClearSharp,
     displayWhileLoggedIn: true,
   },
   {
-    title: "Current Events",
+    title: 'Current Events',
     url: ROUTE_EVENTS,
     iosIcon: calendarOutline,
     mdIcon: calendarSharp,
@@ -60,21 +60,21 @@ const appPages: AppPage[] = [
 
 const loginPages: AppPage[] = [
   {
-    title: "Log In",
+    title: 'Log In',
     url: ROUTE_LOGIN,
     iosIcon: logInOutline,
     mdIcon: logInSharp,
     displayWhileLoggedIn: false,
   },
   {
-    title: "Log Out",
+    title: 'Log Out',
     url: ROUTE_LOGOUT,
     iosIcon: logOutOutline,
     mdIcon: logOutSharp,
     displayWhileLoggedIn: true,
   },
   {
-    title: "Bookmarked",
+    title: 'Bookmarked',
     url: ROUTE_BOOKMARKED,
     iosIcon: bookmarksOutline,
     mdIcon: bookmarksSharp,
@@ -82,13 +82,12 @@ const loginPages: AppPage[] = [
   },
 ];
 
-
 function getMenuItem(appPage, index, location, loggedIn) {
   return (
     loggedIn === appPage.displayWhileLoggedIn && (
       <IonMenuToggle key={index} autoHide={false}>
         <IonItem
-          className={location.pathname === appPage.url ? "selected" : ""}
+          className={location.pathname === appPage.url ? 'selected' : ''}
           routerLink={appPage.url}
           routerDirection="none"
           lines="none"
@@ -102,9 +101,9 @@ function getMenuItem(appPage, index, location, loggedIn) {
   );
 }
 
-const Menu = (props) => {
+const Menu = props => {
   const location = useLocation();
-  const { loggedIn } = props.authState;
+  const {loggedIn} = props.authState;
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -113,12 +112,12 @@ const Menu = (props) => {
           <IonListHeader>Links</IonListHeader>
           <IonNote>hi@ionicframework.com</IonNote>
           {appPages.map((appPage, index) =>
-            getMenuItem(appPage, index, location, loggedIn)
+            getMenuItem(appPage, index, location, loggedIn),
           )}
         </IonList>
         <IonList id="login-list">
           {loginPages.map((loginPage, index) =>
-            getMenuItem(loginPage, index, location, loggedIn)
+            getMenuItem(loginPage, index, location, loggedIn),
           )}
         </IonList>
       </IonContent>
@@ -126,7 +125,7 @@ const Menu = (props) => {
   );
 };
 
-const mapStateToProps = ({ authState }) => ({
+const mapStateToProps = ({authState}) => ({
   authState,
 });
 

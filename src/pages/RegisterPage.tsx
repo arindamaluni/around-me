@@ -10,31 +10,31 @@ import {
   IonPage,
   IonText,
   IonTitle,
-  IonToolbar
-} from "@ionic/react";
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import { auth } from "../firebase";
-import { ROUTE_EVENTS, ROUTE_LOGIN } from "../route-constants";
+  IonToolbar,
+} from '@ionic/react';
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router';
+import {auth} from '../firebase';
+import {ROUTE_EVENTS, ROUTE_LOGIN} from '../route-constants';
 
-const RegisterPage = ({ authState }) => {
-  const { loggedIn } = authState;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState({ loading: false, error: false });
+const RegisterPage = ({authState}) => {
+  const {loggedIn} = authState;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState({loading: false, error: false});
 
   const handleRegister = async () => {
     try {
-      setStatus({ loading: true, error: false });
+      setStatus({loading: true, error: false});
       const credential = await auth.createUserWithEmailAndPassword(
         email,
-        password
+        password,
       );
-      console.log("credential:", credential);
+      console.log('credential:', credential);
     } catch (error) {
-      setStatus({ loading: false, error: true });
-      console.log("error:", error);
+      setStatus({loading: false, error: true});
+      console.log('error:', error);
     }
   };
 
@@ -55,7 +55,7 @@ const RegisterPage = ({ authState }) => {
             <IonInput
               type="email"
               value={email}
-              onIonChange={(event) => setEmail(event.detail.value)}
+              onIonChange={event => setEmail(event.detail.value)}
             />
           </IonItem>
           <IonItem>
@@ -63,7 +63,7 @@ const RegisterPage = ({ authState }) => {
             <IonInput
               type="password"
               value={password}
-              onIonChange={(event) => setPassword(event.detail.value)}
+              onIonChange={event => setPassword(event.detail.value)}
             />
           </IonItem>
         </IonList>
@@ -80,7 +80,7 @@ const RegisterPage = ({ authState }) => {
   );
 };
 
-const mapStateToProps = ({ authState }) => ({
+const mapStateToProps = ({authState}) => ({
   authState,
 });
 

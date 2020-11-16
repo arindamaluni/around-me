@@ -11,40 +11,40 @@ import {
   IonPage,
   IonTextarea,
   IonTitle,
-  IonToolbar
-} from "@ionic/react";
+  IonToolbar,
+} from '@ionic/react';
 import {
   arrowBackOutline,
   arrowBackSharp,
   sendOutline,
-  sendSharp
-} from "ionicons/icons";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { firestore } from "../../firebase";
+  sendSharp,
+} from 'ionicons/icons';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {firestore} from '../../firebase';
 
-function Conversation({ event, onClose, authState }) {
+function Conversation({event, onClose, authState}) {
   const [conv, setConv] = useState([]);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     console.log(event.conversationId);
     const convRef = firestore
-      .collection("conversations")
+      .collection('conversations')
       .doc(event.conversationId)
-      .collection("comments");
+      .collection('comments');
     convRef
-      .orderBy("createdAt", "desc")
+      .orderBy('createdAt', 'desc')
       .get()
-      .then((docs) => {
+      .then(docs => {
         const convList = [];
-        docs.forEach((doc) => {
-          convList.unshift({ id: doc.id, ...doc.data() });
+        docs.forEach(doc => {
+          convList.unshift({id: doc.id, ...doc.data()});
         });
         setConv(convList);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, [event]);
@@ -52,20 +52,20 @@ function Conversation({ event, onClose, authState }) {
   const postMessage = async (event, auhState) => {
     try {
       const entriesRef = firestore
-        .collection("conversations")
+        .collection('conversations')
         .doc(event.conversationId)
-        .collection("comments");
+        .collection('comments');
       const entryData = getMessageEntry(event, auhState);
       console.log(entryData);
       const entryRef = await entriesRef.add(entryData);
-      console.log("saved:", entryRef.id);
+      console.log('saved:', entryRef.id);
     } catch (err) {
       console.log(err);
     }
   };
 
   const getMessageEntry = (event, authState) => {
-    const { displayName, photoURL } = authState;
+    const {displayName, photoURL} = authState;
 
     return {
       displayName,
@@ -82,8 +82,8 @@ function Conversation({ event, onClose, authState }) {
           <IonTitle slot="start">Discussions</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent style={{ position: "relative" }}>
-        {conv.map((comment) => {
+      <IonContent style={{position: 'relative'}}>
+        {conv.map(comment => {
           return (
             <IonItem class="ion-justify-content-between" key={comment.id}>
               <IonAvatar slot="start">
@@ -95,35 +95,35 @@ function Conversation({ event, onClose, authState }) {
               <IonLabel>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "0px",
-                    margin: "0px",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    padding: '0px',
+                    margin: '0px',
                   }}
                 >
                   <p
                     style={{
-                      fontSize: "10px",
-                      fontWeight: "bold",
-                      padding: "0px",
-                      margin: "0px",
+                      fontSize: '10px',
+                      fontWeight: 'bold',
+                      padding: '0px',
+                      margin: '0px',
                     }}
                   >
                     {comment.displayName}
                   </p>
                   <p
                     style={{
-                      fontSize: "10px",
-                      color: "#FF0077",
-                      fontWeight: "bold",
-                      padding: "0px",
-                      margin: "0px",
+                      fontSize: '10px',
+                      color: '#FF0077',
+                      fontWeight: 'bold',
+                      padding: '0px',
+                      margin: '0px',
                     }}
                   >
-                    {moment.utc(comment.createdAt).format("lll")}
+                    {moment.utc(comment.createdAt).format('lll')}
                   </p>
                 </div>
-                <p style={{ fontSize: "12px" }}>{comment.message}</p>
+                <p style={{fontSize: '12px'}}>{comment.message}</p>
               </IonLabel>
             </IonItem>
           );
@@ -144,24 +144,24 @@ function Conversation({ event, onClose, authState }) {
         </IonFab>
 
         <IonItem
-          style={{ position: "fixed", bottom: 0, width: "100%", zIndex: 100 }}
+          style={{position: 'fixed', bottom: 0, width: '100%', zIndex: 100}}
         >
           <IonTextarea
-            style={{ backgroundColor: "secondary" }}
+            style={{backgroundColor: 'secondary'}}
             value={message}
             placeholder="Post your message here"
             color="primary"
-            onIonChange={(e) => setMessage(e.detail.value)}
+            onIonChange={e => setMessage(e.detail.value)}
           >
             <IonLabel position="floating">Comments</IonLabel>
           </IonTextarea>
           <IonButton
             onClick={() => {
               postMessage(event, authState);
-              setMessage("");
+              setMessage('');
             }}
           >
-            Post Message{" "}
+            Post Message{' '}
             <IonIcon
               slot="end"
               ion-padding
@@ -176,7 +176,7 @@ function Conversation({ event, onClose, authState }) {
   );
 }
 
-const mapStateToProps = ({ authState }) => ({
+const mapStateToProps = ({authState}) => ({
   authState,
 });
 

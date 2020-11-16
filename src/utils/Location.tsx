@@ -1,6 +1,6 @@
-import { Capacitor } from "@capacitor/core";
-import { AndroidPermissions } from "@ionic-native/android-permissions";
-import { LocationAccuracy } from "@ionic-native/location-accuracy";
+import {Capacitor} from '@capacitor/core';
+import {AndroidPermissions} from '@ionic-native/android-permissions';
+import {LocationAccuracy} from '@ionic-native/location-accuracy';
 const LocationService = {
   askToTurnOnGPS: async (): Promise<boolean> => {
     return await new Promise((resolve, reject) => {
@@ -8,14 +8,14 @@ const LocationService = {
         if (canRequest) {
           // the accuracy option will be ignored by iOS
           LocationAccuracy.request(
-            LocationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY
+            LocationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY,
           ).then(
             () => {
               resolve(true);
             },
-            (error) => {
+            error => {
               resolve(false);
-            }
+            },
           );
         } else {
           resolve(false);
@@ -28,9 +28,9 @@ const LocationService = {
     return await new Promise((resolve, reject) => {
       if (Capacitor.isNative) {
         AndroidPermissions.checkPermission(
-          AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+          AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
         ).then(
-          (result) => {
+          result => {
             if (result.hasPermission) {
               // If having permission show 'Turn On GPS' dialogue
               resolve(true);
@@ -39,9 +39,9 @@ const LocationService = {
               resolve(false);
             }
           },
-          (err) => {
+          err => {
             alert(err);
-          }
+          },
         );
       } else {
         resolve(true);
@@ -53,27 +53,27 @@ const LocationService = {
     return await new Promise((resolve, reject) => {
       LocationAccuracy.canRequest().then((canRequest: boolean) => {
         if (canRequest) {
-          resolve("CAN_REQUEST");
+          resolve('CAN_REQUEST');
         } else {
           // Show 'GPS Permission Request' dialogue
           AndroidPermissions.requestPermission(
-            AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+            AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
           ).then(
-            (result) => {
+            result => {
               if (result.hasPermission) {
                 // call method to turn on GPS
-                resolve("GOT_PERMISSION");
+                resolve('GOT_PERMISSION');
               } else {
-                resolve("DENIED_PERMISSION");
+                resolve('DENIED_PERMISSION');
               }
             },
-            (error) => {
+            error => {
               // Show alert if user click on 'No Thanks'
               alert(
-                "requestPermission Error requesting location permissions " +
-                  error
+                'requestPermission Error requesting location permissions ' +
+                  error,
               );
-            }
+            },
           );
         }
       });

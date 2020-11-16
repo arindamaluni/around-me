@@ -9,24 +9,24 @@ import {
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar
-} from "@ionic/react";
-import { getDistance } from "geolib";
-import { add as addIcon } from "ionicons/icons";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import EventListing from "../components/EventListing/EventListing";
-import { firestore } from "../firebase";
-import { ROUTE_NEWEVENT } from "../route-constants";
-import { addEvents, storeEvents } from "../store/action-creators/event-actions";
+  IonToolbar,
+} from '@ionic/react';
+import {getDistance} from 'geolib';
+import {add as addIcon} from 'ionicons/icons';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import EventListing from '../components/EventListing/EventListing';
+import {firestore} from '../firebase';
+import {ROUTE_NEWEVENT} from '../route-constants';
+import {addEvents, storeEvents} from '../store/action-creators/event-actions';
 import setLastLocation, {
   addToDiscardedList,
   addToFavList,
-  removeFromFavList
-} from "../store/action-creators/profile-actions";
-import { EventItem } from "../types";
-import { saveOrUpdateEvent } from "../utils/EventDBHandler";
-import { saveOrUpdateProfile } from "../utils/ProfileDBHandler";
+  removeFromFavList,
+} from '../store/action-creators/profile-actions';
+import {EventItem} from '../types';
+import {saveOrUpdateEvent} from '../utils/EventDBHandler';
+import {saveOrUpdateProfile} from '../utils/ProfileDBHandler';
 
 const Events = ({
   authState,
@@ -56,46 +56,46 @@ const Events = ({
   useEffect(() => {
     // Get current user location
     // Get snapshot of all future events
-    const entriesRef = firestore.collection("events");
+    const entriesRef = firestore.collection('events');
     entriesRef
-      .where("date", ">", new Date().getTime())
+      .where('date', '>', new Date().getTime())
       .get()
-      .then(({ docs }) => {
+      .then(({docs}) => {
         const events = docs
           .map(EventItem.toEventItem)
-          .filter((doc) => isWithinPerimeter(doc, getValidLocation()));
+          .filter(doc => isWithinPerimeter(doc, getValidLocation()));
         setEvents(events);
       });
-    console.log("First fetch Called");
+    console.log('First fetch Called');
   }, [setEvents]);
 
   useEffect(() => {
     //Subscribe to realtime update on new events
     //The return is to ensure unsubscribe is called on unmount
-    const entriesRef = firestore.collection("events");
+    const entriesRef = firestore.collection('events');
     return entriesRef
-      .orderBy("createdAt", "desc")
-      .where("createdAt", ">", new Date().getTime())
+      .orderBy('createdAt', 'desc')
+      .where('createdAt', '>', new Date().getTime())
       .onSnapshot(
-        ({ docs }) => {
+        ({docs}) => {
           // console.log(currentTime, new Date().getTime(), docs.map(EventItem.toEventItem));
-          console.log("New Event posted.....");
+          console.log('New Event posted.....');
           addNewEvents(
             docs
               .map(EventItem.toEventItem)
-              .filter((doc) => isWithinPerimeter(doc, getValidLocation()))
+              .filter(doc => isWithinPerimeter(doc, getValidLocation())),
           );
         },
-        (err) => {
+        err => {
           console.log(err);
-        }
+        },
       );
   }, [addNewEvents, location]);
 
   const isWithinPerimeter = (eventItem, currentLoc) => {
     // console.log(eventItem, currentLoc);
     if (!eventItem || !eventItem.coordinates) return true;
-    const { latitude, longitude } = eventItem.coordinates;
+    const {latitude, longitude} = eventItem.coordinates;
 
     if (
       !(
@@ -109,17 +109,17 @@ const Events = ({
       return true;
 
     const distance = getDistance(
-      { latitude, longitude },
-      { latitude: currentLoc.latitude, longitude: currentLoc.longitude }
+      {latitude, longitude},
+      {latitude: currentLoc.latitude, longitude: currentLoc.longitude},
     );
     eventItem.distance = distance;
     console.log(distance);
     if (distance <= eventItem?.perimeter) return true;
-    console.log("Outside Geo perimeter");
+    console.log('Outside Geo perimeter');
     return false;
   };
 
-  const toggleFavourite = (eventId) => {
+  const toggleFavourite = eventId => {
     if (profile.favList.includes(eventId)) {
       removeFromFavList(eventId);
     } else {
@@ -130,10 +130,10 @@ const Events = ({
   };
 
   const discardOrWithdraw = (eventId, availability = null) => {
-    const event = events.find((event) => event.id === eventId);
+    const event = events.find(event => event.id === eventId);
     if (event && event.publisherId === profile.uid) {
       event.availability = availability;
-      saveOrUpdateEvent({ id: eventId, availability });
+      saveOrUpdateEvent({id: eventId, availability});
     } else if (event) {
       addToDiscardedList(eventId);
       saveOrUpdateProfile(profile);
@@ -180,14 +180,14 @@ const Events = ({
   );
 };
 
-const mapStateToProps = ({ authState, events, location, profile }) => ({
+const mapStateToProps = ({authState, events, location, profile}) => ({
   authState,
   events,
   location,
   profile,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   setEvents(events) {
     dispatch(storeEvents(events));
   },
@@ -195,16 +195,16 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addEvents(events));
   },
   setLastLocation(location) {
-    dispatch(setLastLocation({ location }));
+    dispatch(setLastLocation({location}));
   },
   addToFavList(eventId) {
-    dispatch(addToFavList({ eventId }));
+    dispatch(addToFavList({eventId}));
   },
   removeFromFavList(eventId) {
-    dispatch(removeFromFavList({ eventId }));
+    dispatch(removeFromFavList({eventId}));
   },
   addToDiscardedList(eventId) {
-    dispatch(addToDiscardedList({ eventId }));
+    dispatch(addToDiscardedList({eventId}));
   },
 });
 
