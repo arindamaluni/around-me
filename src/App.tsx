@@ -7,11 +7,10 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { default as useAuthInit } from './auth';
-import EventListing from './components/EventListing/EventListing';
 import Menu from './components/Menu';
 /* Theme variables */
 import './global.scss';
-import EventDetails from './pages/EventDetails';
+import BookMarkList from './pages/BookMarkList';
 import Events from './pages/Events';
 import LoginPage from './pages/LoginPage';
 import LogOutPage from './pages/LogOutPage';
@@ -51,11 +50,12 @@ const App: React.FC = () => {
               <Route path={constants.ROUTE_LOGIN} component={LoginPage} />
               <Route path={constants.ROUTE_LOGOUT} component={LogOutPage} />
               <Route path={constants.ROUTE_REGISTER} component={RegisterPage} />
-              <Route path={constants.ROUTE_EVENT_PARAM} component={EventDetails} />
+              {/* <Route path={constants.ROUTE_EVENT_PARAM} component={EventDetails} /> */}
               <Route path={constants.ROUTE_EVENTS} component={Events} exact />
               {/* <ProtectedRoute path={constants.ROUTE_EVENTS} component={Events} exact /> */}
               <Route path={constants.ROUTE_NEWEVENT} component={NewEvent} exact/>             
-              <Route path={constants.ROUTE_EVENT_TEMP} component={EventListing} exact/>             
+              {/* <Route path={constants.ROUTE_EVENT_TEMP} component={EventListing} exact/> */}
+              <Route path={constants.ROUTE_BOOKMARKED} component={BookMarkList} exact/>             
 
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>

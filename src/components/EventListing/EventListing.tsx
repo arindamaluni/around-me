@@ -9,13 +9,13 @@ import moment from "moment";
 import React, { useState } from "react";
 import Conversation from "../Conversation/Conversation";
 import MapView from "../LocationPicker/MapView";
-import './event-listing.scss';
 
 function EventListing ({eventList, authState, userProfile, toggleFavourite, discardOrWithdraw}) {
 
   const [showMap, setShowMap] = useState({show:false, id:null});
   const [showConv, setShowConv] = useState({show:false, id:null});
   const [showAlert, setShowAlert] = useState ({show:false, id:null});
+  const [userIconUrl, setUserIconUrl] = useState('/assets/icon/user.png');
 
   const getMapModal = (event) => {
     // if (event.id !== showMap.id) return;
@@ -37,6 +37,18 @@ function EventListing ({eventList, authState, userProfile, toggleFavourite, disc
         onClose = {()=>setShowConv({show:false, id:null})}
       />
     </IonModal>)
+  }
+
+  const getAvailabilityTag = (event) => {
+    const avl = event.availability;
+    const color = !avl?"primary":"medium";
+    return (
+      <IonLabel color={color} class="ion-text-uppercase" >
+        <div className={!avl?"available":"unavailable"} /* style={{ display:"inline-block", borderWidth:"2px", 
+          borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} */ > 
+            {!avl?"available":avl}</div>
+      </IonLabel>
+    )
   }
 
   const ionAlert = <IonAlert
@@ -101,15 +113,19 @@ function EventListing ({eventList, authState, userProfile, toggleFavourite, disc
         <IonCard color="light" style={{padding:"5px"}} key={event.id}>
           <IonItem class="ion-justify-content-between">
             <IonAvatar slot="start">
-              <img src={event.photoURL} alt={event.displayName?.charAt(0).toUpperCase()}/>
+              <img src={event.photoURL?event.photoURL:'/assets/icon/user.png'} alt={event.displayName?.charAt(0).toUpperCase()}/>
             </IonAvatar>         
                 <div className="ion-float-left" style={{fontWeight:"bold"}}>
                   <h5>{event.displayName} </h5>
                   {event.createdAt && <p style={{fontSize:"10px", color:"#FF0077"}}>Posted : {moment.utc(1605342597947).format('ll')}</p> }
                 </div>
                 <div slot="end" style= {{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
-                  <IonLabel color="primary" class="ion-text-uppercase" ><div style={{ display:"inline-block", borderWidth:"2px", borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} > Available</div></IonLabel>
-                  
+                  <IonLabel color={!event.availability?"primary":"medium"} class="ion-text-uppercase" >
+                    <div style={{ display:"inline-block", borderWidth:"2px", 
+                      borderStyle:"solid", borderRadius:"4px", borderColor:"#FF0077", padding:"5px"}} > 
+                        {!event.availability?"available":event.availability}
+                    </div>
+                  </IonLabel>              
                 </div>
           </IonItem>
           <div style={{position:"relative"}}>      
