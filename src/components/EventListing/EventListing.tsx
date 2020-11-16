@@ -35,6 +35,7 @@ function EventListing({
   userProfile,
   toggleFavourite,
   discardOrWithdraw,
+  mode,
 }) {
   const [showMap, setShowMap] = useState({show: false, id: null});
   const [showConv, setShowConv] = useState({show: false, id: null});
@@ -133,7 +134,13 @@ function EventListing({
     if (userProfile.discardedList.includes(event.id))
       return <div key={event.id}></div>;
     return (
-      <IonCard color="light" style={{padding: '5px'}} key={event.id}>
+      <IonCard
+        color="light"
+        style={{padding: '5px'}}
+        //Hack:Assign a random key in preview mode when id is nonexistent
+        key={event.id ? event.id : Math.random()}
+      >
+        {console.log(event)}
         <IonItem class="ion-justify-content-between">
           <IonAvatar slot="start">
             <img
@@ -241,7 +248,7 @@ function EventListing({
               justifyContent: 'center',
             }}
           >
-            <a href={event.externalLink}>External Link</a>
+            <a href={event.externalLink}>Go to Site</a>
           </div>
         )}
         <IonCardContent class="ion-text-center" style={{fontSize: '13px'}}>
@@ -292,7 +299,11 @@ function EventListing({
                 color="primary"
                 md={chatbubblesSharp}
                 ios={chatbubblesOutline}
-                onClick={() => setShowConv({show: true, id: event.id})}
+                onClick={() =>
+                  mode !== 'preview'
+                    ? setShowConv({show: true, id: event.id})
+                    : null
+                }
               />
             </button>
             <button style={{backgroundColor: 'transparent', outline: 'none'}}>
@@ -303,7 +314,9 @@ function EventListing({
                 }
                 md={bookmarksSharp}
                 ios={bookmarksOutline}
-                onClick={() => toggleFavourite(event.id)}
+                onClick={() =>
+                  mode !== 'preview' ? toggleFavourite(event.id) : null
+                }
               />
             </button>
             <button style={{backgroundColor: 'transparent', outline: 'none'}}>
@@ -312,7 +325,9 @@ function EventListing({
                 color="primary"
                 md={trashSharp}
                 ios={trashOutline}
-                onClick={() => handleEventDiscard(event)}
+                onClick={() =>
+                  mode !== 'preview' ? handleEventDiscard(event) : null
+                }
               />
             </button>
           </div>

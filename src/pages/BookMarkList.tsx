@@ -154,6 +154,7 @@ const Events = ({
               userProfile={profile}
               toggleFavourite={toggleFavourite}
               discardOrWithdraw={addToDiscardedList}
+              mode={'listing'}
             />
           </>
         )}

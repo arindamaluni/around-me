@@ -158,7 +158,7 @@ const Events = ({
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            {mode ? (
+            {!mode ? (
               <IonMenuButton />
             ) : (
               <IonBackButton defaultHref={ROUTE_EVENTS} />
@@ -182,6 +182,7 @@ const Events = ({
               userProfile={profile}
               toggleFavourite={toggleFavourite}
               discardOrWithdraw={discardOrWithdraw}
+              mode={'listing'}
             />
           </>
         )}

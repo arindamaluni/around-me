@@ -1,16 +1,19 @@
 import {CameraResultType, CameraSource, Plugins} from '@capacitor/core';
 import {
   IonBackButton,
-  IonButton,
   IonButtons,
   IonContent,
   IonDatetime,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
+  IonModal,
   IonPage,
+  IonSegment,
+  IonSegmentButton,
   IonText,
   IonTextarea,
   IonTitle,
@@ -20,17 +23,25 @@ import {
 import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 import * as geofirestore from 'geofirestore';
-import {locationOutline, locationSharp} from 'ionicons/icons';
+import {
+  locationOutline,
+  locationSharp,
+  phonePortraitOutline,
+  phonePortraitSharp,
+  saveOutline,
+  saveSharp,
+} from 'ionicons/icons';
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {useHistory} from 'react-router';
+import EventListing from '../components/EventListing/EventListing';
 import MapContainer from '../components/LocationPicker/MapContainer';
 import {firestore, storage} from '../firebase';
 import {ROUTE_EVENTS} from '../route-constants';
 const {Camera} = Plugins;
 const GeoFirestore = geofirestore.initializeApp(firestore);
 
-const NewEvent = ({authState}) => {
+const NewEvent = ({authState, profile}) => {
   const [title, setTitle] = useState('');
   const [highlight, setHighlight] = useState('');
   const [overlay, setOverlay] = useState('');
@@ -42,6 +53,7 @@ const NewEvent = ({authState}) => {
   const [location, setLocation] = useState({lat: 0.0, lng: 0.0, address: ''});
   const [locationPickOpen, setLocationPickOpen] = useState(false);
   const {displayName, photoURL} = authState;
+  const [showPreview, setShowPreview] = useState(false);
 
   const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png');
   const fileInputRef = useRef();
@@ -111,6 +123,7 @@ const NewEvent = ({authState}) => {
       externalLink,
       publisherId: authState.uid,
       createdAt: new Date().getTime(),
+      pictureUrl,
     };
   }
 
@@ -291,16 +304,54 @@ const NewEvent = ({authState}) => {
             saveLocation={storeLocation}
           ></MapContainer>
         )}
-        <IonButton expand="block" onClick={submitHandler}>
+        {/* <IonButton expand="block" onClick={submitHandler}>
           Save
-        </IonButton>
+        </IonButton> */}
+        {console.log(showPreview)}
+        <IonModal
+          isOpen={showPreview}
+          onDidDismiss={() => setShowPreview(false)}
+          swipeToClose={true}
+        >
+          <EventListing
+            //setting id as hack to provide key value for event
+            eventList={[getEventEntry()]}
+            authState={authState}
+            userProfile={profile}
+            toggleFavourite={f => f}
+            discardOrWithdraw={f => f}
+            mode={'preview'}
+          />
+        </IonModal>
       </IonContent>
+      <IonFooter>
+        <IonSegment
+          onIonChange={e => {
+            if (e.detail.value === 'preview') {
+              console.log('preview');
+              setShowPreview(true);
+            } else if (e.detail.value === 'save') {
+              submitHandler();
+            }
+          }}
+        >
+          <IonSegmentButton ion-padding value="preview">
+            <IonLabel>Preview</IonLabel>
+            <IonIcon md={phonePortraitSharp} ios={phonePortraitOutline} />
+          </IonSegmentButton>
+          <IonSegmentButton ion-padding value="save">
+            <IonLabel>Save</IonLabel>
+            <IonIcon md={saveSharp} ios={saveOutline} />
+          </IonSegmentButton>
+        </IonSegment>
+      </IonFooter>
     </IonPage>
   );
 };
 
-const mapStateToProps = ({authState}) => ({
+const mapStateToProps = ({authState, profile}) => ({
   authState,
+  profile,
 });
 
 export default connect(mapStateToProps)(NewEvent);
