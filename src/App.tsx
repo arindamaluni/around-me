@@ -50,13 +50,10 @@ const App: React.FC = () => {
               <Route path={constants.ROUTE_LOGIN} component={LoginPage} />
               <Route path={constants.ROUTE_LOGOUT} component={LogOutPage} />
               <Route path={constants.ROUTE_REGISTER} component={RegisterPage} />
-              {/* <Route path={constants.ROUTE_EVENT_PARAM} component={EventDetails} /> */}
               <Route path={constants.ROUTE_EVENTS} component={Events} exact />
               {/* <ProtectedRoute path={constants.ROUTE_EVENTS} component={Events} exact /> */}
               <Route path={constants.ROUTE_NEWEVENT} component={NewEvent} exact/>             
-              {/* <Route path={constants.ROUTE_EVENT_TEMP} component={EventListing} exact/> */}
               <Route path={constants.ROUTE_BOOKMARKED} component={BookMarkList} exact/>             
-
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>
           </IonSplitPane>

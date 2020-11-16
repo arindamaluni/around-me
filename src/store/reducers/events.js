@@ -3,7 +3,7 @@ export default function events(events = [], action) {
     case "SET_EVENTS":
       return action.payload;
     case "ADD_EVENTS":
-      return events.concat(action.payload).sort((a, b) => (a.date - b.date));
+      return events.concat(action.payload).sort((a, b) => a.date - b.date);
     default:
       return events;
   }
