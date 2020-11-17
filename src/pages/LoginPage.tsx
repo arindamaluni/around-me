@@ -23,10 +23,10 @@ import google from '../theme/google.svg';
 import loadProfile, {saveOrUpdateProfile} from '../utils/ProfileDBHandler';
 
 const LoginPage = props => {
-  console.log(props);
+  // console.log(props);
   const {loggedIn} = props.authState;
   // const loggedIn = false;
-  console.log('Logging in.........1');
+  // console.log('Logging in.........1');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

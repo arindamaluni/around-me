@@ -4,6 +4,7 @@ import {
   IonContent,
   IonFab,
   IonFabButton,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonItem,
@@ -58,7 +59,9 @@ function Conversation({event, onClose, authState}) {
       const entryData = getMessageEntry(event, auhState);
       console.log(entryData);
       const entryRef = await entriesRef.add(entryData);
-      console.log('saved:', entryRef.id);
+      const msg = {id: entryRef.id, ...entryData};
+      console.log('saved:', msg);
+      setConv([...conv, msg]);
     } catch (err) {
       console.log(err);
     }
@@ -88,7 +91,12 @@ function Conversation({event, onClose, authState}) {
             <IonItem class="ion-justify-content-between" key={comment.id}>
               <IonAvatar slot="start">
                 <img
-                  src={comment.photoURL}
+                  style={{width: '80%', height: 'auto'}}
+                  src={
+                    comment.photoURL
+                      ? comment.photoURL
+                      : '/assets/icon/user.png'
+                  }
                   alt={comment.displayName?.charAt(0).toUpperCase()}
                 />
               </IonAvatar>
@@ -142,7 +150,8 @@ function Conversation({event, onClose, authState}) {
             />
           </IonFabButton>
         </IonFab>
-
+      </IonContent>
+      <IonFooter>
         <IonItem
           style={{position: 'fixed', bottom: 0, width: '100%', zIndex: 100}}
         >
@@ -171,7 +180,7 @@ function Conversation({event, onClose, authState}) {
             />
           </IonButton>
         </IonItem>
-      </IonContent>
+      </IonFooter>
     </IonPage>
   );
 }

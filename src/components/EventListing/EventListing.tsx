@@ -140,7 +140,7 @@ function EventListing({
         //Hack:Assign a random key in preview mode when id is nonexistent
         key={event.id ? event.id : Math.random()}
       >
-        {console.log(event)}
+        {/* {console.log(event)} */}
         <IonItem class="ion-justify-content-between">
           <IonAvatar slot="start">
             <img

@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonContent,
   IonFab,
   IonFabButton,
@@ -55,6 +56,7 @@ const MapView = (props: any) => {
     addresses: [],
   });
   const [location, setLocation] = useState({lat: 0, lng: 0, address: ''});
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     setCurrentPick({lat: center.lat, lng: center.lng, addresses: []});
@@ -92,6 +94,7 @@ const MapView = (props: any) => {
         return {...oldState, addresses: reply.results};
       });
     }
+    setShowAlert(true);
   }
   // Requires for IonOption - when objects are used in selection
   const compareWith = (o1, o2) => {
@@ -223,6 +226,16 @@ const MapView = (props: any) => {
           {/* <IonButton onClick={getGeoLocation} className='geoFooter1'>Current Location</IonButton> */}
           {/* <IonButton onClick={()=>{console.log(location); onClose(location)}} className='geoFooter2'>Done</IonButton> */}
         </IonContent>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={'Location'}
+          subHeader={'Your current location is picked'}
+          message={
+            'Select address from the options below, or refine your serach'
+          }
+          buttons={['OK']}
+        />
       </IonPage>
     </>
   );

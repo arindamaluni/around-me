@@ -83,7 +83,7 @@ const NewEvent = ({authState, profile}) => {
   }
 
   async function submitHandler(e) {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       const conversations = firestore.collection('conversations');
       const conv = await conversations.add({publisherId: authState.uid});
