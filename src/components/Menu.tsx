@@ -20,6 +20,8 @@ import {
   logInSharp,
   logOutOutline,
   logOutSharp,
+  shareOutline,
+  shareSharp,
 } from 'ionicons/icons';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -29,6 +31,7 @@ import {
   ROUTE_EVENTS,
   ROUTE_LOGIN,
   ROUTE_LOGOUT,
+  ROUTE_MYPOSTS,
   ROUTE_NEWEVENT,
 } from '../route-constants';
 import './Menu.css';
@@ -74,7 +77,14 @@ const loginPages: AppPage[] = [
     displayWhileLoggedIn: true,
   },
   {
-    title: 'Bookmarked',
+    title: 'My Posts',
+    url: ROUTE_MYPOSTS,
+    iosIcon: shareOutline,
+    mdIcon: shareSharp,
+    displayWhileLoggedIn: true,
+  },
+  {
+    title: 'Bookmarks',
     url: ROUTE_BOOKMARKED,
     iosIcon: bookmarksOutline,
     mdIcon: bookmarksSharp,
@@ -110,7 +120,7 @@ const Menu = props => {
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Links</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonNote>{props.authState.email}</IonNote>
           {appPages.map((appPage, index) =>
             getMenuItem(appPage, index, location, loggedIn),
           )}

@@ -13,6 +13,7 @@ import './global.scss';
 import Events from './pages/Events';
 import LoginPage from './pages/LoginPage';
 import LogOutPage from './pages/LogOutPage';
+import MyPosts from './pages/MyPosts';
 import NewEvent from './pages/NewEvent';
 import RegisterPage from './pages/RegisterPage';
 import * as constants from './route-constants';
@@ -50,6 +51,7 @@ const App: React.FC = () => {
               <Route path={constants.ROUTE_LOGOUT} component={LogOutPage} />
               <Route path={constants.ROUTE_REGISTER} component={RegisterPage} />
               <Route path={constants.ROUTE_EVENTS} component={Events} exact />
+              <Route path={constants.ROUTE_MYPOSTS} component={MyPosts} exact />
               {/* <ProtectedRoute path={constants.ROUTE_EVENTS} component={Events} exact /> */}
               <Route
                 path={constants.ROUTE_NEWEVENT}
@@ -59,7 +61,13 @@ const App: React.FC = () => {
               <Route
                 path={constants.ROUTE_BOOKMARKED}
                 exact
-                render={props => <Events {...props} mode={'favourite'} />}
+                render={props => (
+                  <Events
+                    {...props}
+                    mode={'favourite'}
+                    pageTitle={'My Bookmarks'}
+                  />
+                )}
               />
               <Redirect from="/" to={constants.ROUTE_LOGIN} exact />
             </IonRouterOutlet>

@@ -43,6 +43,8 @@ const Events = ({
   removeFromFavList,
   addToDiscardedList,
   mode,
+  posts,
+  pageTitle,
 }) => {
   function getValidLocation() {
     let currentLocation = location;
@@ -101,8 +103,10 @@ const Events = ({
 
   //Prepare display eventlist based on mode
   let eventList = events;
-  if (mode) {
+  if (mode === 'favourite') {
     eventList = events.filter(event => profile.favList.includes(event.id));
+  } else if (mode === 'myposts') {
+    eventList = posts;
   }
 
   const isWithinPerimeter = (eventItem, currentLoc) => {
@@ -164,7 +168,7 @@ const Events = ({
               <IonBackButton defaultHref={ROUTE_EVENTS} />
             )}
           </IonButtons>
-          <IonTitle>Current Events</IonTitle>
+          <IonTitle>{pageTitle ? pageTitle : 'Current Events'}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -188,7 +192,7 @@ const Events = ({
         )}
         {!eventList.length && (
           <IonItem>
-            <IonLabel>No posts for display</IonLabel>
+            <IonLabel ion-text-center>No posts for display</IonLabel>
           </IonItem>
         )}
       </IonContent>

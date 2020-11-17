@@ -7,3 +7,4 @@ export const ROUTE_EVENTS = '/page/events';
 export const ROUTE_NEWEVENT = '/page/newevent';
 export const ROUTE_EVENT_TEMP = '/page/eventtemp';
 export const ROUTE_BOOKMARKED = '/page/bookmarked';
+export const ROUTE_MYPOSTS = '/page/myposts';
