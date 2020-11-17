@@ -3,7 +3,6 @@ import '@codetrix-studio/capacitor-google-auth';
 import {
   IonButton,
   IonContent,
-  IonHeader,
   IonIcon,
   IonInput,
   IonItem,
@@ -12,8 +11,6 @@ import {
   IonLoading,
   IonPage,
   IonText,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
@@ -85,15 +82,51 @@ const LoginPage = props => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <p style={{fontSize: '30px', fontWeight: 'bold'}}></p>
+          <img style={{width: '50%'}} src={'/assets/icon/around.svg'} alt="" />
+          <p
+            style={{
+              fontFamily: 'Montserrat',
+              fontSize: '60px',
+              color: '#92949c',
+              fontWeight: 'bold',
+              width: '100%',
+              textAlign: 'center',
+              padding: '0px',
+              margin: '0px',
+            }}
+          >
+            Around
+          </p>
+          <p
+            style={{
+              fontSize: '12px',
+              fontWeight: 'bold',
+              color: '#FF0077',
+              letterSpacing: '4px',
+              width: '100%',
+              textAlign: 'center',
+              padding: '0px',
+              margin: '0px',
+            }}
+          >
+            your beautiful neighborhood
+          </p>
+          <p style={{fontSize: '30px', fontWeight: 'bold'}}></p>
+        </div>
         <IonList>
           <IonItem>
-            <IonLabel position="floating">Email</IonLabel>
+            <IonLabel position="floating" color="medium">
+              Email
+            </IonLabel>
             <IonInput
               type="email"
               value={email}
@@ -101,7 +134,9 @@ const LoginPage = props => {
             />
           </IonItem>
           <IonItem>
-            <IonLabel position="floating">Password</IonLabel>
+            <IonLabel position="floating" color="medium">
+              Password
+            </IonLabel>
             <IonInput
               type="password"
               value={password}
