@@ -4,7 +4,6 @@ import {
   IonButtons,
   IonContent,
   IonDatetime,
-  IonFooter,
   IonHeader,
   IonIcon,
   IonInput,
@@ -31,6 +30,7 @@ import {
   saveOutline,
   saveSharp,
 } from 'ionicons/icons';
+import moment from 'moment';
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {useHistory} from 'react-router';
@@ -106,7 +106,7 @@ const NewEvent = ({authState, profile}) => {
   }
 
   function getEventEntry() {
-    // console.log(+dayjs(date))
+    console.log(+dayjs(date), date, moment(date, 'DD MMM YYYY HH:MM').unix());
     return {
       date: +dayjs(date),
       title,
@@ -117,7 +117,7 @@ const NewEvent = ({authState, profile}) => {
       //the field name must be "coordinates for geofirestore to calculate hashing"
       coordinates: new firebase.firestore.GeoPoint(location.lat, location.lng),
       address: location.address,
-      perimeter,
+      perimeter: perimeter * 1000,
       displayName,
       photoURL,
       externalLink,
@@ -324,27 +324,27 @@ const NewEvent = ({authState, profile}) => {
           />
         </IonModal>
       </IonContent>
-      <IonFooter>
-        <IonSegment
-          onIonChange={e => {
-            if (e.detail.value === 'preview') {
-              console.log('preview');
-              setShowPreview(true);
-            } else if (e.detail.value === 'save') {
-              submitHandler();
-            }
-          }}
-        >
-          <IonSegmentButton ion-padding value="preview">
-            <IonLabel>Preview</IonLabel>
-            <IonIcon md={phonePortraitSharp} ios={phonePortraitOutline} />
-          </IonSegmentButton>
-          <IonSegmentButton ion-padding value="save">
-            <IonLabel>Save</IonLabel>
-            <IonIcon md={saveSharp} ios={saveOutline} />
-          </IonSegmentButton>
-        </IonSegment>
-      </IonFooter>
+      {/* <IonFooter> */}
+      <IonSegment
+        onIonChange={e => {
+          if (e.detail.value === 'preview') {
+            console.log('preview');
+            setShowPreview(true);
+          } else if (e.detail.value === 'save') {
+            submitHandler();
+          }
+        }}
+      >
+        <IonSegmentButton ion-padding value="preview">
+          <IonLabel>Preview</IonLabel>
+          <IonIcon md={phonePortraitSharp} ios={phonePortraitOutline} />
+        </IonSegmentButton>
+        <IonSegmentButton ion-padding value="save">
+          <IonLabel>Save</IonLabel>
+          <IonIcon md={saveSharp} ios={saveOutline} />
+        </IonSegmentButton>
+      </IonSegment>
+      {/* </IonFooter> */}
     </IonPage>
   );
 };

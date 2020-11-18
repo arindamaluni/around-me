@@ -230,10 +230,8 @@ const MapView = (props: any) => {
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           header={'Location'}
-          subHeader={'Your current location is picked'}
-          message={
-            'Select address from the options below, or refine your serach'
-          }
+          subHeader={'Pick your location'}
+          message={'Select address from the options below'}
           buttons={['OK']}
         />
       </IonPage>

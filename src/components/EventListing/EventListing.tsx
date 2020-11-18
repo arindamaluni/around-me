@@ -152,7 +152,7 @@ function EventListing({
             <h5>{event.displayName} </h5>
             {event.createdAt && (
               <p style={{fontSize: '10px', color: '#FF0077'}}>
-                Posted : {moment.utc(1605342597947).format('ll')}
+                Posted : {moment.utc(event.date).format('ll')}
               </p>
             )}
           </div>
@@ -278,7 +278,11 @@ function EventListing({
               borderRadius: '4px',
             }}
           >
-            {(event.distance / 1000).toFixed(2)} Km.
+            {/* {Number.isNaN((event.distance / 1000).toFixed(2))?0:(event.distance / 1000).toFixed(2)+.01} Km. */}
+            {Number.isNaN(event.distance)
+              ? 0
+              : (event.distance / 1000).toFixed(2)}{' '}
+            Km.
           </p>
           <p>{event.address}</p>
         </IonCardContent>

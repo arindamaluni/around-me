@@ -22,10 +22,11 @@ import EventListing from '../components/EventListing/EventListing';
 import {firestore} from '../firebase';
 import {ROUTE_EVENTS, ROUTE_NEWEVENT} from '../route-constants';
 import {addEvents, storeEvents} from '../store/action-creators/event-actions';
-import setLastLocation, {
+import {
   addToDiscardedList,
   addToFavList,
   removeFromFavList,
+  setLastLocation,
 } from '../store/action-creators/profile-actions';
 import {EventItem} from '../types';
 import {saveOrUpdateEvent} from '../utils/EventDBHandler';
@@ -47,16 +48,18 @@ const Events = ({
   pageTitle,
 }) => {
   function getValidLocation() {
-    let currentLocation = location;
-    if (currentLocation.latitude === 0) {
-      currentLocation = profile.lastLocation;
-    } else {
-      setLastLocation({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
-    }
-    return currentLocation;
+    return location.latitude === 0 ? profile.lastLocation : location;
+    // let currentLocation = location;
+    // if (currentLocation.latitude === 0) {
+    //   currentLocation = profile.lastLocation;
+    // } else {
+    //   console.log(location.latitude, location.longitude)
+    //   // setLastLocation({
+    //   //   latitude: location.latitude,
+    //   //   longitude: location.longitude,
+    //   // });
+    // }
+    // return currentLocation;
   }
 
   useEffect(() => {
@@ -74,7 +77,12 @@ const Events = ({
           .filter(doc => isWithinPerimeter(doc, getValidLocation()));
         setEvents(events);
       });
-    console.log('First fetch Called');
+    console.log('First fetch Called', location.latitude, location.longitude);
+    //Set last location in profile
+    setLastLocation({
+      latitude: location.latitude,
+      longitude: location.longitude,
+    });
   }, [setEvents]);
 
   useEffect(() => {
@@ -99,7 +107,7 @@ const Events = ({
           console.log(err);
         },
       );
-  }, [addNewEvents, location]);
+  }, [addNewEvents]);
 
   //Prepare display eventlist based on mode
   let eventList = events;
@@ -108,10 +116,18 @@ const Events = ({
   } else if (mode === 'myposts') {
     eventList = posts;
   }
+  if (mode) {
+    eventList.forEach(
+      event =>
+        (event.distance = getDistanceFromCurrentLocation(
+          event,
+          getValidLocation(),
+        )),
+    );
+  }
 
-  const isWithinPerimeter = (eventItem, currentLoc) => {
-    // console.log(eventItem, currentLoc);
-    if (!eventItem || !eventItem.coordinates) return true;
+  function getDistanceFromCurrentLocation(eventItem, currentLoc) {
+    if (!eventItem || !eventItem.coordinates) return -1;
     const {latitude, longitude} = eventItem.coordinates;
 
     if (
@@ -123,16 +139,23 @@ const Events = ({
         currentLoc.longitude
       )
     )
-      return true;
+      return -1;
 
     const distance = getDistance(
       {latitude, longitude},
       {latitude: currentLoc.latitude, longitude: currentLoc.longitude},
     );
+    return Number.isNaN(distance) ? 0 : distance + 0.001;
+  }
+
+  const isWithinPerimeter = (eventItem, currentLoc) => {
+    // console.log(eventItem, currentLoc);
+    const distance = getDistanceFromCurrentLocation(eventItem, currentLoc);
+    if (distance < 0) return true;
     eventItem.distance = distance;
     console.log(distance);
     if (distance <= eventItem?.perimeter) return true;
-    console.log('Outside Geo perimeter');
+    console.log('Outside Geo perimeter:', eventItem.id);
     return false;
   };
 
@@ -221,8 +244,8 @@ const mapDispatchToProps = dispatch => ({
   addNewEvents(events) {
     dispatch(addEvents(events));
   },
-  setLastLocation(location) {
-    dispatch(setLastLocation({location}));
+  setLastLocation(lastLocation) {
+    dispatch(setLastLocation({lastLocation}));
   },
   addToFavList(eventId) {
     dispatch(addToFavList({eventId}));
