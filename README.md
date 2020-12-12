@@ -1,14 +1,18 @@
 <p align="center">
-  <img width="200" height="200" src="">
+  <img width="200" height="200" src="https://raw.githubusercontent.com/arindamaluni/around-me/09ee6a1e637730f72adeadeb9bf06d86fa68a6a8/public/assets/icon/around.svg">
 </p>
 
 <p align="center"><b>Discover your neighborhood</b></p>
 
 <p align="center">A cross-platform mobile application to distribute contents of offers, events, or other promotional contents in a user-defined region. Content promoters will be able to post to audiences within a defined radius of selectable geolocation and subscribers will be able to get real-time posting information of events they are interested in. It will also be possible to exchange conversations around the posts. The app can be used for beacon marketing or to exchange event communication or promotions in the neighborhood for small local businesses.</p>
 
-![](https://#)
-![](https://#)
-![](https://#)
+![](https://github.com/arindamaluni/around-me/blob/master/public/login.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-events-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-events-2-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-location-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-new-post-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-pick-location-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-pick-location1-e.png)
 
 # Getting Started
 
