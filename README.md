@@ -9,9 +9,9 @@
 ![](https://github.com/arindamaluni/around-me/blob/master/public/login.png)
 ![](https://github.com/arindamaluni/around-me/blob/master/public/around-events-e.png)
 ![](https://github.com/arindamaluni/around-me/blob/master/public/around-events-2-e.png)
-![](https://github.com/arindamaluni/around-me/blob/master/public/around-location-e.png)
-![](https://github.com/arindamaluni/around-me/blob/master/public/around-new-post-e.png)
 ![](https://github.com/arindamaluni/around-me/blob/master/public/around-pick-location-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-new-post-e.png)
+![](https://github.com/arindamaluni/around-me/blob/master/public/around-location-e.png)
 ![](https://github.com/arindamaluni/around-me/blob/master/public/around-pick-location1-e.png)
 
 # Getting Started
