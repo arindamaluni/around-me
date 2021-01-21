@@ -1,3 +1,7 @@
+# around-me
+
+An instant promotion and beacon marketing application to promote offers to prospects in a geographic boundary.
+
 <p align="center">
   <img width="200" height="200" src="https://raw.githubusercontent.com/arindamaluni/around-me/09ee6a1e637730f72adeadeb9bf06d86fa68a6a8/public/assets/icon/around.svg">
 </p>
